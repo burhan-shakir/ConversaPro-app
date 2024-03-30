@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,8 +29,14 @@ public class MainActivity extends AppCompatActivity {
 
         //Title Progressive
         TextView textTitle = findViewById(R.id.textViewtilte);
-        Animation animationAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.text_title_ani);
-        textTitle.startAnimation(animationAlpha);
+        Animation animationTitle = AnimationUtils.loadAnimation(MainActivity.this, R.anim.text_title_ani);
+        textTitle.startAnimation(animationTitle);
+
+        //logo Progressive
+        ImageView logo = findViewById(R.id.logoImage);
+        Animation animationLogo = AnimationUtils.loadAnimation(MainActivity.this, R.anim.logo_ani);
+        logo.startAnimation(animationLogo);
+
 
 
     }

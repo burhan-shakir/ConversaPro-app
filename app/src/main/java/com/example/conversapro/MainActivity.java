@@ -22,6 +22,9 @@ import com.example.conversapro.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        //Title Progressive
+        TextView textTitle = findViewById(R.id.textViewtilte);
+        Animation animationAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.alpha);
+        textTitle.startAnimation(animationAlpha);
+
 
     }
 }

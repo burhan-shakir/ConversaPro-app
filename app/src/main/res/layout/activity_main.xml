@@ -20,16 +20,18 @@
         app:layout_constraintStart_toStartOf="parent"
 
 
-
         />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="118dp"
-        android:layout_height="104dp"
-        android:layout_marginStart="144dp"
-        android:layout_marginTop="232dp"
+        android:id="@+id/imageView3"
+        android:layout_width="178dp"
+        android:layout_height="136dp"
+        android:layout_marginTop="244dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_lock_lock" />
+        app:srcCompat="@drawable/logo2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

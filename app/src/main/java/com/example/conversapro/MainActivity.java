@@ -1,5 +1,6 @@
 package com.example.conversapro;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -9,10 +10,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.conversapro.ui.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +41,15 @@ public class MainActivity extends AppCompatActivity {
         Animation animationLogo = AnimationUtils.loadAnimation(MainActivity.this, R.anim.logo_ani);
         logo.startAnimation(animationLogo);
 
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, 4500);
 
 
     }

@@ -31,25 +31,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-//        //Title Progressive
-//        TextView textTitle = findViewById(R.id.textViewtilte);
-//        Animation animationTitle = AnimationUtils.loadAnimation(MainActivity.this, R.anim.text_title_ani);
-//        textTitle.startAnimation(animationTitle);
-//
-//        //logo Progressive
-//        ImageView logo = findViewById(R.id.logoImage);
-//        Animation animationLogo = AnimationUtils.loadAnimation(MainActivity.this, R.anim.logo_ani);
-//        logo.startAnimation(animationLogo);
-
-//
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        }, 4500);
 
 
     }

@@ -5,7 +5,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.os.Looper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,7 +86,15 @@ public class StartFragment extends Fragment {
         Animation animationLogo = AnimationUtils.loadAnimation(getContext(), R.anim.logo_ani);
         logo.startAnimation(animationLogo);
 
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        mainHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                NavController controller = Navigation.findNavController(getView());
+                controller.navigate(R.id.action_startFragment_to_loginFragment);
 
+            }
+        }, 4500);
 
     }
 }

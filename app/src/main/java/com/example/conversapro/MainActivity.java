@@ -16,7 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.conversapro.ui.login.LoginActivity;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,15 +41,15 @@ public class MainActivity extends AppCompatActivity {
         Animation animationLogo = AnimationUtils.loadAnimation(MainActivity.this, R.anim.logo_ani);
         logo.startAnimation(animationLogo);
 
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        }, 4500);
+//
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        }, 4500);
 
 
     }

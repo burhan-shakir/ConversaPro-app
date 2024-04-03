@@ -2,11 +2,17 @@ package com.example.conversapro;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,5 +66,22 @@ public class StartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_start, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //Title Progressive
+        TextView textTitle = getView().findViewById(R.id.textViewtilte);
+        Animation animationTitle = AnimationUtils.loadAnimation(getContext(), R.anim.text_title_ani);
+        textTitle.startAnimation(animationTitle);
+
+        //logo Progressive
+        ImageView logo = getView().findViewById(R.id.logoImage);
+        Animation animationLogo = AnimationUtils.loadAnimation(getContext(), R.anim.logo_ani);
+        logo.startAnimation(animationLogo);
+
+
+
     }
 }

@@ -1,7 +1,5 @@
 package com.example.conversapro;
 
-import static com.example.conversapro.ChatView.reciverIImg;
-import static com.example.conversapro.ChatView.senderImg;
 
 import android.app.AlertDialog;
 import android.content.Context;

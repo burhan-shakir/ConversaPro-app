@@ -19,7 +19,6 @@ public class ChatDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat_detail, container, false);
         TextView tvChatDetail = view.findViewById(R.id.tvChatDetail);
 

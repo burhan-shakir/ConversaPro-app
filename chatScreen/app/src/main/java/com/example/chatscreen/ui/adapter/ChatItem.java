@@ -3,7 +3,6 @@ package com.example.chatscreen.ui.adapter;
 public class ChatItem {
     private String contactName;
     private String messagePreview;
-    // other fields like profile image, chat id, etc.
 
     public ChatItem(String contactName, String messagePreview) {
         this.contactName = contactName;

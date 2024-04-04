@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">chatScreen</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Livestream</string>
-    <string name="title_notifications">Profile</string>
-    <string name="button">New Chat\n</string>
-</resources>

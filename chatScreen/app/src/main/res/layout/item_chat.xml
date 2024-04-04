@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/item_background_selector">
 
     <ImageView
         android:id="@+id/profile_image"
@@ -29,5 +30,6 @@
             android:layout_height="wrap_content"
             android:text="Message preview" />
     </LinearLayout>
+
 
 </LinearLayout>

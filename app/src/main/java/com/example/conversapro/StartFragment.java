@@ -93,6 +93,7 @@ public class StartFragment extends Fragment {
                 NavController controller = Navigation.findNavController(getView());
                 controller.navigate(R.id.action_startFragment_to_loginFragment);
 
+
             }
         }, 4500);
 

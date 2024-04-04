@@ -54,6 +54,7 @@ public class AESEncryption {
         // Generating Keys
         SecretKeySpec key = generateKey(128);
 
+        System.out.println(key.getEncoded());
         // encrypted
         String data = "Hello, World!";
         String encryptedData = encrypt(data, key);

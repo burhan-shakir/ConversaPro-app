@@ -17,10 +17,5 @@
         android:id="@+id/loginFragment"
         android:name="com.example.conversapro.ui.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment_to_placeholder"
-            app:destination="@id/placeholder" />
-    </fragment>
-    <fragment android:id="@+id/placeholder" />
+        tools:layout="@layout/fragment_login" />
 </navigation>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "426439700525",
+    "project_id": "conversapro-58d4d",
+    "storage_bucket": "conversapro-58d4d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426439700525:android:591116df7c0caefcbb88a4",
+        "android_client_info": {
+          "package_name": "com.example.conversapro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTVrzOM49kLv8DHsMK-ThQN6RVEq2A82M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

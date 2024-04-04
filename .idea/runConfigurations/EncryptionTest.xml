@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="EncryptionTest" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.example.conversapro.KerberosProtocol.Encryption.AESEncryption" />
+    <module name="ConversaPro.app.main" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

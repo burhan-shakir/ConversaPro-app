@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.chatscreen.R;
+import com.example.conversapro.R;
 
 public class ChatDetailFragment extends Fragment {
 

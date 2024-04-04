@@ -11,10 +11,10 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.chatscreen.R;
-import com.example.chatscreen.databinding.FragmentHomeBinding;
-import com.example.chatscreen.ui.adapter.ChatAdapter;
-import com.example.chatscreen.ui.adapter.ChatItem;
+import com.example.conversapro.R;
+import com.example.conversapro.databinding.FragmentHomeBinding;
+import com.example.conversapro.ui.adapter.ChatAdapter;
+import com.example.conversapro.ui.adapter.ChatItem;
 
 import java.util.ArrayList;
 import java.util.List;

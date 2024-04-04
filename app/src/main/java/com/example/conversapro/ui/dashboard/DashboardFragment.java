@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.chatscreen.databinding.FragmentDashboardBinding;
+import com.example.conversapro.databinding.FragmentDashboardBinding;
 
 public class DashboardFragment extends Fragment {
 

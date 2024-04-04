@@ -1,10 +1,12 @@
 package com.example.conversapro;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -70,6 +72,7 @@ public class StartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_start, container, false);
     }
 
@@ -87,6 +90,11 @@ public class StartFragment extends Fragment {
         logo.startAnimation(animationLogo);
 
         Handler mainHandler = new Handler(Looper.getMainLooper());
+
+
+
+
+
         mainHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -95,6 +103,11 @@ public class StartFragment extends Fragment {
 
                 //skip login for test merge
                 controller.navigate(R.id.action_startFragment_to_homeFragment);
+
+
+
+                Intent intent = new Intent("SHOW_MENU_ACTION");
+                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
 
 
             }

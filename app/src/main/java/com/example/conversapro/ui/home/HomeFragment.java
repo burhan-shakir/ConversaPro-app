@@ -7,7 +7,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +18,7 @@ import com.example.conversapro.R;
 import com.example.conversapro.databinding.FragmentHomeBinding;
 import com.example.conversapro.ui.adapter.ChatAdapter;
 import com.example.conversapro.ui.adapter.ChatItem;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +50,7 @@ public class HomeFragment extends Fragment {
     }
 
 
+
     private List<ChatItem> getChatItems() {
         // return a list of ChatItems
 
@@ -61,7 +66,7 @@ public class HomeFragment extends Fragment {
         chatItems.add(new ChatItem("Contact Name 8", "Message preview 8"));
         chatItems.add(new ChatItem("Contact Name 9", "Message preview 9"));
         chatItems.add(new ChatItem("Contact Name 10", "Message preview 10"));
-        chatItems.add(new ChatItem("Contact Name 11", "Message preview 11"));
+        chatItems.add(new ChatItem("test", "Message preview 11"));
 
         return chatItems;
     }

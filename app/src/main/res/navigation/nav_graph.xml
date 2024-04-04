@@ -34,12 +34,26 @@
             android:id="@+id/action_homeFragment_to_chatDetailFragment"
             app:destination="@id/chatDetailFragment" />
     </fragment>
+
+
     <fragment
         android:id="@+id/chatDetailFragment"
-        android:name="com.example.conversapro.ui.home.ChatDetailFragment"
+        android:name="com.example.conversapro.ui.home.HomeFragment"
         android:label="ChatDetailFragment" >
         <action
             android:id="@+id/action_chatDetailFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.example.conversapro.ui.dashboard.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.example.conversapro.ui.notifications.NotificationsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" />
 </navigation>

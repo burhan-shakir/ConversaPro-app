@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Hide at startup
         bottomNavigationView.setVisibility(View.GONE);
-
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("SHOW_MENU_ACTION"));
 

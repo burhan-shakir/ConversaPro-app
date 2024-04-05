@@ -72,7 +72,8 @@ public class StartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        Intent intent = new Intent("HIDE_MENU_ACTION");
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
         return inflater.inflate(R.layout.fragment_start, container, false);
     }
 

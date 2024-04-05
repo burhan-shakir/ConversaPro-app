@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setVisibility(View.GONE);
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("SHOW_MENU_ACTION"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiverH,
+                new IntentFilter("HIDE_MENU_ACTION"));
 
     }
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -53,10 +55,22 @@ public class MainActivity extends AppCompatActivity {
             showMenu();
         }
     };
+    private BroadcastReceiver mMessageReceiverH = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // 调用showMenu方法
+            hideMenu();
+        }
+    };
+
 
     private void showMenu(){
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setVisibility(View.VISIBLE);
+    }
+    private void hideMenu(){
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setVisibility(View.GONE);
     }
     @Override
     protected void onDestroy() {

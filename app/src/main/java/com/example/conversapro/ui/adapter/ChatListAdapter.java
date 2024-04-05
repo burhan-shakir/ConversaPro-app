@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.conversapro.R;
 import java.util.List;
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
+public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatViewHolder> {
     private List<ChatItem> chatList;
     private int selectedPosition = RecyclerView.NO_POSITION;
 
-    private OnChatItemClickListener onChatItemClickListener;
+    private final OnChatItemClickListener onChatItemClickListener;
 
-    public ChatAdapter(List<ChatItem> chatList, OnChatItemClickListener listener) {
+    public ChatListAdapter(List<ChatItem> chatList, OnChatItemClickListener listener) {
         this.chatList = chatList;
         this.onChatItemClickListener = listener;
     }
@@ -27,7 +27,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat, parent, false);
-        return new ChatViewHolder(view);
+        return new ChatViewHolder(view, onChatItemClickListener);
     }
 
     @Override
@@ -46,6 +46,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
                 notifyItemChanged(selectedPosition);
 
                 // Handle the click event for item
+                onChatItemClickListener.onChatClick(chatItem);
             }
         });
 
@@ -59,15 +60,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         TextView contactName;
         TextView messagePreview;
 
-        public ChatViewHolder(View itemView) {
+        public ChatViewHolder(View itemView, OnChatItemClickListener onChatItemClickListener) {
             super(itemView);
             contactName = itemView.findViewById(R.id.contact_name);
             messagePreview = itemView.findViewById(R.id.message_preview);
-
         }
     }
-    // Interface for click events
-    public interface OnChatItemClickListener {
-        void onChatClick(ChatItem chatItem);
-    }
+    // Interface for click events was moved to separate interface file
 }

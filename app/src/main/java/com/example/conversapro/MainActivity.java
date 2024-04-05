@@ -51,14 +51,12 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // 调用showMenu方法
             showMenu();
         }
     };
     private BroadcastReceiver mMessageReceiverH = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // 调用showMenu方法
             hideMenu();
         }
     };

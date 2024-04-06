@@ -1,10 +1,12 @@
 package com.example.conversapro;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -70,6 +72,8 @@ public class StartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Intent intent = new Intent("HIDE_MENU_ACTION");
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
         return inflater.inflate(R.layout.fragment_start, container, false);
     }
 
@@ -92,9 +96,9 @@ public class StartFragment extends Fragment {
             public void run() {
                 NavController controller = Navigation.findNavController(getView());
                 controller.navigate(R.id.action_startFragment_to_loginFragment);
-
+                Intent intent = new Intent("SHOW_MENU_ACTION");
+                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
             }
         }, 4500);
-
     }
 }

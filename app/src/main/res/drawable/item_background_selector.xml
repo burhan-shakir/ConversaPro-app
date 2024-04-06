@@ -1,0 +1,5 @@
+<!-- In your drawable folder, create a file named item_background_selector.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/selected_color" android:state_selected="true"/>
+    <item android:drawable="@android:color/transparent"/>
+</selector>

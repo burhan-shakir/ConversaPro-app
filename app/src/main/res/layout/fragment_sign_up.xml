@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUp">
+
+    <EditText
+        android:id="@+id/edt_name"
+        android:paddingLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginTop="100dp"
+        android:hint="Name"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="20dp"/>
+
+    <EditText
+        android:id="@+id/edt_email"
+        android:paddingLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_below="@id/edt_name"
+        android:layout_marginTop="10dp"
+        android:hint="Email"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="20dp"/>
+
+    <EditText
+        android:id="@+id/edt_password"
+        android:layout_width="match_parent"
+        android:paddingLeft="10dp"
+        android:layout_height="58dp"
+        android:layout_below="@id/edt_email"
+        android:layout_marginTop="10dp"
+        android:hint="Password"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="20dp"
+        android:inputType="textPassword"/>
+
+    <Button
+        android:id="@+id/btn_signup"
+        android:layout_width="150dp"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edt_password"
+        android:layout_centerHorizontal="true"
+        android:text="Sign Up"
+        android:layout_marginTop="10dp"/>
+
+
+</RelativeLayout>

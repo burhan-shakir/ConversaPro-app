@@ -8,16 +8,18 @@ public class Client {
     private AESEncryption aes;
     private String username;
     private String password;
+    private String clientID="1";
 
-    public Client(KeyDistributionCenter kdc, AESEncryption aes, String username, String password) {
+    public Client(KeyDistributionCenter kdc, AESEncryption aes, String username, String password,String clientID) {
         this.kdc = kdc;
         this.aes = aes;
         this.username = username;
         this.password = password;
+        this.clientID = clientID;
     }
 
     public boolean requestService(String serviceName) {
-        String encryptedTGT = kdc.requestTGT(username, password);
+        String encryptedTGT = kdc.requestTGT(username, password,clientID);
         if (encryptedTGT == null) {
             System.out.println("Authentication failed.");
             return false;
@@ -28,7 +30,7 @@ public class Client {
             return false;
         }
         Server server = new Server(aes, kdc.getServiceKey(serviceName));
-        server.accessService(encryptedServiceTicket);
+        server.accessService(encryptedServiceTicket,"1");
         return true;
     }
 }

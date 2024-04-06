@@ -16,12 +16,12 @@ public class AuthenticationServer {
         this.userPasswords.put("bob", "password321");
     }
 
-    public String authenticate(String username, String password) {
+    public String authenticate(String username, String password,String clientId) {
         // Check for user password match
         if (userPasswords.containsKey(username) && userPasswords.get(username).equals(password)) {
             // If it matches, create a TGT
             String sessionKey = "SessionKeyFor" + username; // normal Session keys are  randomly generated
-            TicketGrantingTicket tgt = new TicketGrantingTicket(username, sessionKey);
+            TicketGrantingTicket tgt = new TicketGrantingTicket(username, sessionKey,clientId);
             return tgt.encrypt(aes);
         }
         return null;

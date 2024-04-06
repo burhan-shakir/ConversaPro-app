@@ -10,13 +10,14 @@ public class MainforTestprotical {
 
         @Test
         public  void main() {
+
+
             AESEncryption aes = new AESEncryption();
             AuthenticationServer as = new AuthenticationServer(aes);
             KeyDistributionCenter kdc = new KeyDistributionCenter(as, aes);
-
-            Client client = new Client(kdc, aes, "alice", "password123");
-
+            Client client = new Client(kdc, aes, "alice", "password123","1");
             client.requestService("FileService");
+
 
 // First communication: The client communicates with the Authentication Server (AS).
 // The client sends a username and password request Ticket-Granting Ticket (TGT).

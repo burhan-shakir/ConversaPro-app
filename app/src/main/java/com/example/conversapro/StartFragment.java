@@ -100,9 +100,12 @@ public class StartFragment extends Fragment {
             @Override
             public void run() {
                 NavController controller = Navigation.findNavController(getView());
-//                controller.navigate(R.id.action_startFragment_to_loginFragment);
+//
                 //skip login for test merge
-                controller.navigate(R.id.action_startFragment_to_loginFragment);
+//                controller.navigate(R.id.action_startFragment_to_loginFragment);
+
+                //go from start -> home to skip login
+                controller.navigate(R.id.action_startFragment_to_homeFragment);
 
 //this doesn't make much sense to add since users can go to see chat without logging in.
 //

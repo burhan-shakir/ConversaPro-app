@@ -13,7 +13,7 @@ public class KeyDistributionCenter {
         this.authenticationServer = as;
         this.aes = aes;
         this.serviceKeys = new HashMap<>();
-        // 假设添加了一些服务及其密钥
+        // Suppose some services and their keys are added
         this.serviceKeys.put("FileService", "serviceKey123");
     }
     public String getServiceKey(String serviceName) {

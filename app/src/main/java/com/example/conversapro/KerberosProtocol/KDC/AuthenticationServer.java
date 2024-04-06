@@ -5,7 +5,7 @@ import com.example.conversapro.KerberosProtocol.Encryption.AESEncryption;
 import java.util.HashMap;
 
 public class AuthenticationServer {
-    private HashMap<String, String> userPasswords; // 存储用户名和密码
+    private HashMap<String, String> userPasswords; // Storing user names and passwords
     private AESEncryption aes;
 
     public AuthenticationServer(AESEncryption aes) {

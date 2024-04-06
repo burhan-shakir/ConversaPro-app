@@ -20,7 +20,7 @@ public class Server {
 
         if (serviceKey.equals(serviceSessionKey)) {
             System.out.println("Service Ticket is valid. " + username + " is granted access to " + serviceName);
-            // 进行服务相关的操作
+            // Perform service-related operations
         } else {
             System.out.println("Invalid Service Ticket.");
         }

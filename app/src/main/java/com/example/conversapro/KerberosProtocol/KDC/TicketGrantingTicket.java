@@ -4,14 +4,14 @@ import com.example.conversapro.KerberosProtocol.Encryption.AESEncryption;
 
 public class TicketGrantingTicket {
     private String username;
-    private String sessionKey; // 会话密钥通常与 TGT 一起生成
+    private String sessionKey; // The session key is usually generated with the TGT
 
     public TicketGrantingTicket(String username, String sessionKey) {
         this.username = username;
         this.sessionKey = sessionKey;
     }
 
-    // 通常 TGT 会包含更多信息，如有效期等，这里简化处理
+    //  Often the TGT will contain more information, such as expiration dates, etc., but this is simplified here.
 
     public String getUsername() {
         return username;
@@ -21,13 +21,12 @@ public class TicketGrantingTicket {
         return sessionKey;
     }
 
-    // TGT 应当被加密以保护其内容，这里假设一个加密方法
+    // cryptographic method is assumed to protect TGT
     public String encrypt(AESEncryption aes) {
         String tgtData = username + ":" + sessionKey;
         return aes.encrypt(tgtData);
     }
 
-    // 类似地，应当有一个对应的解密方法
     public static TicketGrantingTicket decrypt(String encryptedData, AESEncryption aes) {
         String decryptedData = aes.decrypt(encryptedData);
         String[] parts = decryptedData.split(":");

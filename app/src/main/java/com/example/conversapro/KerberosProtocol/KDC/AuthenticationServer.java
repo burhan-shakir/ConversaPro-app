@@ -19,9 +19,10 @@ public class AuthenticationServer {
     public String authenticate(String username, String password) {
         // 检查用户密码是否匹配
         if (userPasswords.containsKey(username) && userPasswords.get(username).equals(password)) {
-            // 如果匹配，返回加密的 TGT
-            String tgt = "TGT-" + username;
-            return aes.encrypt(tgt);
+            // 如果匹配，创建一个 TGT
+            String sessionKey = "SessionKeyFor" + username; // 会话密钥通常是随机生成的
+            TicketGrantingTicket tgt = new TicketGrantingTicket(username, sessionKey);
+            return tgt.encrypt(aes);
         }
         return null;
     }

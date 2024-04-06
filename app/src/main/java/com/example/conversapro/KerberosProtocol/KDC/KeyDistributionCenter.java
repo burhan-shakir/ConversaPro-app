@@ -16,7 +16,9 @@ public class KeyDistributionCenter {
         // 假设添加了一些服务及其密钥
         this.serviceKeys.put("FileService", "serviceKey123");
     }
-
+    public String getServiceKey(String serviceName) {
+        return serviceKeys.getOrDefault(serviceName, null);
+    }
     public String requestTGT(String username, String password) {
         return authenticationServer.authenticate(username, password);
     }

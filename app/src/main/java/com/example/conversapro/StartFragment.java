@@ -105,11 +105,6 @@ public class StartFragment extends Fragment {
                 controller.navigate(R.id.action_startFragment_to_homeFragment);
 
 
-
-                Intent intent = new Intent("SHOW_MENU_ACTION");
-                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
-
-
             }
         }, 4500);
 

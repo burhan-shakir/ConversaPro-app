@@ -16,18 +16,19 @@ public class Client {
         this.password = password;
     }
 
-    public void requestService(String serviceName) {
+    public boolean requestService(String serviceName) {
         String encryptedTGT = kdc.requestTGT(username, password);
         if (encryptedTGT == null) {
             System.out.println("Authentication failed.");
-            return;
+            return false;
         }
         String encryptedServiceTicket = kdc.grantServiceTicket(encryptedTGT, serviceName);
         if (encryptedServiceTicket == null) {
             System.out.println("Failed to obtain service ticket.");
-            return;
+            return false;
         }
         Server server = new Server(aes, kdc.getServiceKey(serviceName));
         server.accessService(encryptedServiceTicket);
+        return true;
     }
 }

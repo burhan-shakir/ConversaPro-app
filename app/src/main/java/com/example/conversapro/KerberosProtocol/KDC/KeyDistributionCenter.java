@@ -29,7 +29,7 @@ public class KeyDistributionCenter {
         if (tgt != null && serviceKeys.containsKey(serviceName)) {
             // Changing the encryption key before generating a new service ticket
             try {
-                AES.changeDefaultKey();
+                AESEncryption.changeDefaultKey();
                 System.out.println("Encryption key has been updated.");
             } catch (Exception e) {
                 System.err.println("Failed to update encryption key: " + e.getMessage());

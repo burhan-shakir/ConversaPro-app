@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "164250244588",
+    "firebase_url": "https://chat-eb531-default-rtdb.firebaseio.com",
+    "project_id": "chat-eb531",
+    "storage_bucket": "chat-eb531.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164250244588:android:cd5a8a60e9bddd3e17dcc9",
+        "android_client_info": {
+          "package_name": "com.example.chatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyaKyrZl0Z7bCGhlMQrurhNmJ5P48askY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164250244588:android:95fa196a2c20b4de17dcc9",
+        "android_client_info": {
+          "package_name": "com.example.conversapro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyaKyrZl0Z7bCGhlMQrurhNmJ5P48askY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -24,21 +24,26 @@ import android.widget.Toast;
 import com.example.conversapro.databinding.FragmentLoginBinding;
 
 import com.example.conversapro.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.concurrent.Executor;
 
 public class LoginFragment extends Fragment {
 
     private LoginViewModel loginViewModel;
     private FragmentLoginBinding binding;
+    private FirebaseAuth mAuth;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     @Override
@@ -51,6 +56,7 @@ public class LoginFragment extends Fragment {
         final EditText passwordEditText = binding.password;
         final Button loginButton = binding.login;
         final ProgressBar loadingProgressBar = binding.loading;
+        mAuth = FirebaseAuth.getInstance();
 
         loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), new Observer<LoginFormState>() {
             @Override
@@ -118,9 +124,18 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                String email = usernameEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
+
+                // Check if email and password are not empty
+                if (!email.isEmpty() && !password.isEmpty()) {
+                    // Call the login method only when both email and password are provided
+                    login(email, password);
+                    loadingProgressBar.setVisibility(View.VISIBLE);
+                } else {
+                    // Display a message if email or password is empty
+                    Toast.makeText(getContext(), "Please enter both email and password", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -132,6 +147,7 @@ public class LoginFragment extends Fragment {
             Toast.makeText(getContext().getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         }
     }
+
 
     private void showLoginFailed(@StringRes Integer errorString) {
         if (getContext() != null && getContext().getApplicationContext() != null) {
@@ -146,5 +162,21 @@ public class LoginFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void login(String email, String password){
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Toast.makeText(getContext().getApplicationContext(), "welcome", Toast.LENGTH_LONG).show();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(getContext().getApplicationContext(), "Authentication failed: Unknown error", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }

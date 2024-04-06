@@ -15,7 +15,7 @@ public class MainforTestprotical {
             AESEncryption aes = new AESEncryption();
             AuthenticationServer as = new AuthenticationServer(aes);
             KeyDistributionCenter kdc = new KeyDistributionCenter(as, aes);
-            Client client = new Client(kdc, aes, "alice", "password123","1");
+            Client client = new Client(kdc, aes, "alice", "password123");
             client.requestService("FileService");
 
 

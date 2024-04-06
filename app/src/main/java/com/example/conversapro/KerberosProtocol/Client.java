@@ -10,12 +10,12 @@ public class Client {
     private String password;
     private String clientID="1";
 
-    public Client(KeyDistributionCenter kdc, AESEncryption aes, String username, String password,String clientID) {
+    public Client(KeyDistributionCenter kdc, AESEncryption aes, String username, String password) {
         this.kdc = kdc;
         this.aes = aes;
         this.username = username;
         this.password = password;
-        this.clientID = clientID;
+
     }
 
     public boolean requestService(String serviceName) {

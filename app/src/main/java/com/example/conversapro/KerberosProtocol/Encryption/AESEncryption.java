@@ -20,6 +20,9 @@ public class AESEncryption {
             throw new RuntimeException(e);
         }
     }
+    public static void changeDefaultKey() throws Exception {
+        simukey = generateKey(128);
+    }
 
     // Generating Keys
     public static SecretKeySpec generateKey(int n) throws Exception {

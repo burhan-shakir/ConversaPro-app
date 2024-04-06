@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -143,7 +142,7 @@ public class LoginFragment extends Fragment {
                 if (!email.isEmpty() && !password.isEmpty()) {
                     // Call the login method only when both email and password are provided
                     login(email, password);
-                    loadingProgressBar.setVisibility(View.VISIBLE);
+                    //loadingProgressBar.setVisibility(View.VISIBLE);
                 } else {
                     // Display a message if email or password is empty
                     Toast.makeText(getContext(), "Please enter both email and password", Toast.LENGTH_SHORT).show();
@@ -159,7 +158,6 @@ public class LoginFragment extends Fragment {
             Toast.makeText(getContext().getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         }
     }
-
 
     private void showLoginFailed(@StringRes Integer errorString) {
         if (getContext() != null && getContext().getApplicationContext() != null) {

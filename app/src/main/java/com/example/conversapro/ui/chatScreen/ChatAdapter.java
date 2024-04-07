@@ -18,6 +18,7 @@ import java.util.Locale;
 
 public class ChatAdapter extends ArrayAdapter<MsgModel> {
     public ChatAdapter(Context context, List<MsgModel> messages){
+
         super(context, 0, messages);
     }
     @NonNull
@@ -30,7 +31,10 @@ public class ChatAdapter extends ArrayAdapter<MsgModel> {
         MsgModel currentMessage = getItem(position);
 
         TextView textViewSender = listItemView.findViewById(R.id.textViewSender);
-        textViewSender.setText(currentMessage.getSenderID());
+        textViewSender.setText("From: " + currentMessage.getSenderID());
+
+        TextView textViewReceiver = listItemView.findViewById(R.id.textViewReceiver);
+        textViewReceiver.setText("To: " + currentMessage.getReceiver());
 
         TextView textViewMessage = listItemView.findViewById(R.id.textViewMessage);
         textViewMessage.setText(currentMessage.getMessage());

@@ -12,11 +12,6 @@
         <action
             android:id="@+id/action_startFragment_to_loginFragment"
             app:destination="@id/loginFragment"/>
-        <action
-            android:id="@+id/action_startFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -44,6 +39,9 @@
         <action
             android:id="@+id/action_homeFragment_to_chatScreenFragment"
             app:destination="@id/chatScreenFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 
 
@@ -96,6 +94,9 @@
         <action
             android:id="@+id/action_signUpFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfile"

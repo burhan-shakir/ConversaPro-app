@@ -14,6 +14,11 @@ public class AuthenticationServer {
         // Added preset users
         this.userPasswords.put("alice", "password123");
         this.userPasswords.put("bob", "password321");
+        this.userPasswords.put("bob", "password321");
+        this.userPasswords.put("bob", "password321");
+        this.userPasswords.put("bob", "password321");
+        this.userPasswords.put("bob", "password321");
+
     }
 
     public String authenticate(String username, String password,String clientId) {

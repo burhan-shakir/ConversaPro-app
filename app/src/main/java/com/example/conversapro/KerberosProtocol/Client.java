@@ -1,36 +1,50 @@
 package com.example.conversapro.KerberosProtocol;
 
 import com.example.conversapro.KerberosProtocol.Encryption.AESEncryption;
-import com.example.conversapro.KerberosProtocol.KDC.KeyDistributionCenter;
+import com.example.conversapro.KerberosProtocol.KDC.AuthenticationServer;
+import com.example.conversapro.KerberosProtocol.KDC.ChatServiceServer;
+import com.example.conversapro.KerberosProtocol.KDC.TicketGratingServer;
+
+import java.util.function.Function;
+
+import javax.crypto.spec.SecretKeySpec;
 
 public class Client {
-    private KeyDistributionCenter kdc;
-    private AESEncryption aes;
-    private String username;
-    private String password;
-    private String clientID="1";
+    private final Server server;
+    private SecretKeySpec sessionKey = null;
+    private SecretKeySpec csKey = null;
 
-    public Client(KeyDistributionCenter kdc, AESEncryption aes, String username, String password) {
-        this.kdc = kdc;
-        this.aes = aes;
-        this.username = username;
-        this.password = password;
-
+    public Client(Server server) {
+        this.server = server;
     }
 
-    public boolean requestService(String serviceName) {
-        String encryptedTGT = kdc.requestTGT(username, password,clientID);
-        if (encryptedTGT == null) {
-            System.out.println("Authentication failed.");
-            return false;
-        }
-        String encryptedServiceTicket = kdc.grantServiceTicket(encryptedTGT, serviceName);
-        if (encryptedServiceTicket == null) {
-            System.out.println("Failed to obtain service ticket.");
-            return false;
-        }
-        Server server = new Server(aes, kdc.getServiceKey(serviceName));
-        server.accessService(encryptedServiceTicket,"1");
-        return true;
+    public void authenticateWithChatService(String userId, String password, Function<Boolean, Void> callback) {
+        this.server.authenticationServer.authenticateClient(userId, (asMessage) -> {
+            AuthenticationServer.ASMessage.DecodedASMessage decodedASMessage = asMessage.decode(password);
+            if (decodedASMessage == null) {
+                callback.apply(false);
+                return null;
+            }
+            this.sessionKey = decodedASMessage.sessionKey;
+            TicketGratingServer.TGSRequest tgsRequest = TicketGratingServer.TGSRequest.encode(userId, decodedASMessage.sessionKey, decodedASMessage.tgt, "chat");
+            server.ticketGratingServer.authenticateClientService(tgsRequest, (tgsResponse) -> {
+                if (tgsResponse == null) {
+                    callback.apply(false);
+                    return null;
+                }
+                TicketGratingServer.TGSResponse.DecodedTGSResponse decodedTGSResponse = tgsResponse.decode(decodedASMessage.sessionKey);
+                this.csKey = decodedTGSResponse.csKey;
+                ChatServiceServer.SSRequest ssRequest = ChatServiceServer.SSRequest.encode(userId, decodedTGSResponse.csKey, decodedTGSResponse.messageE);
+                String response = server.chatServiceServer.authenticate(ssRequest);
+                try {
+                    AESEncryption.decrypt(response, decodedTGSResponse.csKey);
+                    callback.apply(true);
+                } catch (Exception e) {
+                    callback.apply(false);
+                }
+                return null;
+            });
+            return null;
+        });
     }
 }

@@ -64,7 +64,7 @@ public class SignUpFragment extends Fragment {
 
     private void signUp(String name, String email, String password){
 
-        AuthenticationServer.getUserPasswords("123").put(email,password);
+//        AuthenticationServer.getUserPasswords("123").put(email,password);
         authen.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
                     @Override

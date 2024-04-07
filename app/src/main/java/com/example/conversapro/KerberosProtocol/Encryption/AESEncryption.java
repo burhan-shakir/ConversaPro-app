@@ -32,6 +32,14 @@ public class AESEncryption {
         return new SecretKeySpec(keyBytes, AES);
     }
 
+    public static SecretKeySpec generateKeyFromPassword(String password) throws Exception {
+        SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+        secureRandom.setSeed(password.getBytes());
+        KeyGenerator keyGenerator = KeyGenerator.getInstance(AES);
+        keyGenerator.init(128, secureRandom);
+        return new SecretKeySpec(keyGenerator.generateKey().getEncoded(), AES);
+    }
+
     // encrypted
     public static String encrypt(String data, SecretKeySpec key) throws Exception {
         Cipher cipher = Cipher.getInstance(AES_CIPHER_ALGORITHM);

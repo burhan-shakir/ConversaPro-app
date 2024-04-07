@@ -2,39 +2,80 @@ package com.example.conversapro.KerberosProtocol.KDC;
 
 import com.example.conversapro.KerberosProtocol.Encryption.AESEncryption;
 
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
+import java.util.function.Function;
+
+import javax.crypto.spec.SecretKeySpec;
 
 public class AuthenticationServer {
-    private static HashMap<String, String> userPasswords= new HashMap<>();; // Storing user names and passwords
-    private AESEncryption aes;
 
-    public AuthenticationServer(AESEncryption aes) {
-        this.aes = aes;
-        // Added preset users
-        this.userPasswords.put("yuk42@mcmaster.ca", "123456");
-        this.userPasswords.put("xuhuixin2003@gmail.com", "123456");
-        this.userPasswords.put("b@gmail.com", "123456");
-        this.userPasswords.put("loux8@mcmaster.ca", "123456");
-        this.userPasswords.put("hatoumg@mcmaster.ca", "123456");
+    private final Database database;
+    private final SecretKeySpec tgsKey;
 
-
+    public AuthenticationServer(Database database, SecretKeySpec tgsKey) {
+        this.database = database;
+        this.tgsKey = tgsKey;
     }
 
-    public static HashMap<String, String> getUserPasswords(String key) {
-        if (key=="123"){
-            return userPasswords;
-        }
-        return null;
+    public void authenticateClient(String userId, Function<ASMessage, Void> callback) {
+        this.database.retrieveUserPassword(userId, (password) -> {
+            if (password == null) {
+                callback.apply(null);
+                return null;
+            }
+
+            try {
+                SecretKeySpec sessionKey = AESEncryption.generateKey(128);
+                callback.apply(ASMessage.encode(password, sessionKey, this.tgsKey, userId));
+            } catch (Exception e) {
+                callback.apply(null);
+            }
+            return null;
+        });
     }
 
-    public String authenticate(String username, String password, String clientId) {
-        // Check for user password match
-        if (userPasswords.containsKey(username) && userPasswords.get(username).equals(password)) {
-            // If it matches, create a TGT
-            String sessionKey = "SessionKeyFor" + username; // normal Session keys are  randomly generated
-            TicketGrantingTicket tgt = new TicketGrantingTicket(username, sessionKey,clientId);
-            return tgt.encrypt(aes);
+    public static class ASMessage {
+        public String messageA;
+        public String tgt;
+
+        private ASMessage(String messageA, String tgt) {
+            this.messageA = messageA;
+            this.tgt = tgt;
         }
-        return null;
+
+        static ASMessage encode(String password, SecretKeySpec sessionKey, SecretKeySpec tgsKey, String userId) {
+            try {
+                SecretKeySpec userKey = AESEncryption.generateKeyFromPassword(password);
+                byte[] sessionKeyBytes = sessionKey.getEncoded();
+                String messageA = AESEncryption.encrypt(Base64.getEncoder().encodeToString(sessionKeyBytes), userKey);
+                String messageB = AESEncryption.encrypt(Base64.getEncoder().encodeToString(sessionKeyBytes) + ":" + userId + ":" + System.currentTimeMillis(), tgsKey);
+                return new ASMessage(messageA, messageB);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        public DecodedASMessage decode(String password) {
+            try {
+                SecretKeySpec userKey = AESEncryption.generateKeyFromPassword(password);
+                String decryptedMessageA = AESEncryption.decrypt(this.messageA, userKey);
+                SecretKeySpec sessionKey = new SecretKeySpec(Base64.getDecoder().decode(decryptedMessageA), "AES");
+                return new DecodedASMessage(sessionKey, this.tgt);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        public static class DecodedASMessage {
+            public SecretKeySpec sessionKey;
+            public String tgt;
+
+            private DecodedASMessage(SecretKeySpec sessionKey, String tgt) {
+                this.sessionKey = sessionKey;
+                this.tgt = tgt;
+            }
+        }
     }
 }

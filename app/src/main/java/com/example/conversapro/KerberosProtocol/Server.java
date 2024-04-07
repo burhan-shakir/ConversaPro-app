@@ -1,46 +1,32 @@
 package com.example.conversapro.KerberosProtocol;
 
 import com.example.conversapro.KerberosProtocol.Encryption.AESEncryption;
+import com.example.conversapro.KerberosProtocol.KDC.AuthenticationServer;
+import com.example.conversapro.KerberosProtocol.KDC.ChatServiceServer;
+import com.example.conversapro.KerberosProtocol.KDC.Database;
+import com.example.conversapro.KerberosProtocol.KDC.MockDatabase;
+import com.example.conversapro.KerberosProtocol.KDC.TicketGratingServer;
+
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+
+import javax.crypto.spec.SecretKeySpec;
+
 public class Server {
-    private AESEncryption aes;
-    private String serviceKey;
 
-    public Server(AESEncryption aes, String serviceKey) {
-        this.aes = aes;
-        this.serviceKey = serviceKey;
-    }
+    public AuthenticationServer authenticationServer;
+    public TicketGratingServer ticketGratingServer;
+    public ChatServiceServer chatServiceServer;
 
-    public boolean accessService(String encryptedServiceTicket, String clientID) {
-        String ticketInfo = aes.decrypt(encryptedServiceTicket);
-        String[] parts = ticketInfo.split(":");
-        String serviceName = parts[0];
-        String ticketClientID = parts[1];
-        String serviceSessionKey = parts[2];
-        Instant ticketTimestamp = Instant.parse(parts[3]+":"+parts[4]+":"+parts[5]);
-
-        if (!serviceKey.equals(serviceSessionKey)) {
-            System.out.println("Invalid Service Ticket.");
-            return false;
+    public Server(Database database) {
+        try {
+            SecretKeySpec tgsKey = AESEncryption.generateKey(128);
+            SecretKeySpec ssKey = AESEncryption.generateKey(128);
+            authenticationServer = new AuthenticationServer(database, tgsKey);
+            ticketGratingServer = new TicketGratingServer(tgsKey, ssKey);
+            chatServiceServer = new ChatServiceServer(ssKey);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        // Verify clientID
-        if (!clientID.equals(ticketClientID)) {
-            System.out.println("Invalid clientID.");
-            return false;
-        }
-
-        // Verify that the timestamp of the ticket is within the allowed time window,  5 minutes here
-        if (ticketTimestamp.isBefore(Instant.now().minus(5, ChronoUnit.MINUTES))) {
-            System.out.println("Service Ticket has expired.");
-            return false;
-        }
-
-        System.out.println("Service Ticket is valid. " + ticketClientID + " is granted access to " + serviceName);
-
-        return true;//If normal, perform the service operation and return to the service here
-
-
     }
 }

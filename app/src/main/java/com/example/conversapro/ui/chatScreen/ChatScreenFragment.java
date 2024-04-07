@@ -4,42 +4,55 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.conversapro.R;
 import com.example.conversapro.databinding.FragmentChatScreenBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ChatScreenFragment extends Fragment {
+public class ChatScreenFragment extends Fragment{
     private ListView listViewChat;
     private EditText editTextMessage;
     private Button buttonSendMessage;
-    private DatabaseReference databaseReference;
+    private TextView chatName;
+    private DatabaseReference databaseReferenceChats;
+    private List<MsgModel> messages;
+    private String currentRoomID;
+    private String currentChatName;
+    private String currentRcvName;
+    private String isCurrChatNewChat;
     private ChatAdapter adapter;
+    private NewChatViewModel newChatViewModel;
     public FragmentChatScreenBinding binding;
+    private ChatModel chatModel;
     public ChatScreenFragment() {
         // Required empty public constructor
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        newChatViewModel = new ViewModelProvider(requireActivity()).get(NewChatViewModel.class);
     }
 
     @Override
@@ -50,6 +63,8 @@ public class ChatScreenFragment extends Fragment {
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
         binding = FragmentChatScreenBinding.inflate(inflater, container, false);
         initializeViews(binding.getRoot());
+        getNewChatDetails();
+        //isNewChat();
         initializeFirebase();
         sendMessage();
         initMessageListener();
@@ -60,60 +75,105 @@ public class ChatScreenFragment extends Fragment {
         listViewChat = view.findViewById(R.id.listViewChat);
         editTextMessage = view.findViewById(R.id.editTextMessage);
         buttonSendMessage = view.findViewById(R.id.buttonSendMessage);
+        chatName = view.findViewById(R.id.chatName);
+
     }
     private void initializeFirebase() {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("messages");
+        databaseReferenceChats = FirebaseDatabase.getInstance().getReference().child("chats");
+    }
+
+    private void setChatName() {
+        /**databaseReferenceChats.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                chatModel = snapshot.getValue(ChatModel.class);
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });**/
+        chatName.setText(currentChatName);
     }
     private void sendMessage() {
         buttonSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String message = editTextMessage.getText().toString().trim();
                 if (!TextUtils.isEmpty(message)) {
                     String sender = getUserName(); // Set the sender's name or ID
-                    MsgModel chatMessage = new MsgModel(message, sender);
-                    databaseReference.push().setValue(chatMessage);
+                    String receiver = getRecvName();
+                    MsgModel chatMessage = new MsgModel(message, sender, receiver);
+                    databaseReferenceChats.child(currentRoomID).child("messages").push().setValue(chatMessage);
                     editTextMessage.setText("");
-                }
-            }
+                    adapter.add(chatMessage);
+                    adapter.notifyDataSetChanged();
+                        }
+                    }
         });
 
+    }
+    private void initMessageListener(){
+        databaseReferenceChats.child("69").child("messages").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                messages = new ArrayList<>();
+                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                    MsgModel chatMessage = messageSnapshot.getValue(MsgModel.class);
+                    messages.add(chatMessage);
+                }
+                adapter = new ChatAdapter(getActivity(), messages);
+                listViewChat.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle database error
+            }
+        });
     }
     private String getUserName() {
         // TO DO: Fetch the user name to send to database in message
         return "Jane Doe"; // Placeholder name
     }
+    private String getRecvName() {
+        // TO DO: Fetch the recvr name to send to database in message
+        return currentRcvName; // Placeholder name
+    }
+    private String getRoomID() {
+        // TO DO: Fetch the roomID to send to database in message
+        return currentRoomID; // Placeholder name
+    }
 
-    private void initMessageListener(){
-        adapter = new ChatAdapter(getActivity(), new ArrayList<MsgModel>());
-        listViewChat.setAdapter(adapter);
-        databaseReference.addChildEventListener(new ChildEventListener() {
+    private void isNewChat(){
+        newChatViewModel.getIsNewChat().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                MsgModel msgModel = snapshot.getValue(MsgModel.class);
-                adapter.add(msgModel);
-                adapter.notifyDataSetChanged();
-                listViewChat.smoothScrollToPosition(adapter.getCount() - 1);
+            public void onChanged(String isNewChat) {
+                isCurrChatNewChat = isNewChat;
             }
+        });
+    }
 
+    private void getNewChatDetails(){
+        newChatViewModel.getChatName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+            public void onChanged(String chatNameNewChat) {
+                Toast.makeText(requireContext(), chatNameNewChat, Toast.LENGTH_SHORT).show();
+                chatName.setText(chatNameNewChat);
             }
-
+        });
+        newChatViewModel.getRoomID().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
+            public void onChanged(String roomIDNewChat) {
+                currentRoomID = roomIDNewChat;
             }
-
+        });
+        newChatViewModel.getRecvName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onChanged(String recvNameNewChat) {
+                currentRcvName = recvNameNewChat;
             }
         });
     }

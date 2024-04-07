@@ -23,6 +23,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.conversapro.KerberosProtocol.Client;
+import com.example.conversapro.KerberosProtocol.Encryption.AESEncryption;
+import com.example.conversapro.KerberosProtocol.KDC.AuthenticationServer;
+import com.example.conversapro.KerberosProtocol.KDC.KeyDistributionCenter;
 import com.example.conversapro.databinding.FragmentLoginBinding;
 
 import com.example.conversapro.R;
@@ -138,12 +142,19 @@ public class LoginFragment extends Fragment {
                 // Check if email and password are not empty
                 if (!email.isEmpty() && !password.isEmpty()) {
                     // Call the login method only when both email and password are provided
+
                     login(email, password);
+
                     //loadingProgressBar.setVisibility(View.VISIBLE);
                 } else {
                     // Display a message if email or password is empty
                     Toast.makeText(getContext(), "Please enter both email and password", Toast.LENGTH_SHORT).show();
                 }
+
+
+
+
+
             }
         });
     }
@@ -176,15 +187,30 @@ public class LoginFragment extends Fragment {
                 .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(getContext().getApplicationContext(), "welcome", Toast.LENGTH_LONG).show();
+
+                        AESEncryption aes = new AESEncryption();
+                        AuthenticationServer as = new AuthenticationServer(aes);
+                        KeyDistributionCenter kdc = new KeyDistributionCenter(as, aes);
+                        Client client = new Client(kdc, aes, email, password);
+                        if(client.requestService("FileService")){
+
+//                            if (task.isSuccessful()) {
+//                                // Sign in success, update UI with the signed-in user's information
+//                                Toast.makeText(getContext().getApplicationContext(), "welcome", Toast.LENGTH_LONG).show();
+//                                NavController controller = Navigation.findNavController(getView());
+//                                controller.navigate(R.id.action_loginFragment_to_homeFragment);
+//                            } else {
+//                                // If sign in fails, display a message to the user.
+//                                Toast.makeText(getContext().getApplicationContext(), "Authentication failed: Unknown error", Toast.LENGTH_SHORT).show();
+//                            }
                             NavController controller = Navigation.findNavController(getView());
                             controller.navigate(R.id.action_loginFragment_to_homeFragment);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(getContext().getApplicationContext(), "Authentication failed: Unknown error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext().getApplicationContext(), "welcome", Toast.LENGTH_LONG).show();
+                        }else {
+                            Toast.makeText(getContext().getApplicationContext(), "Protocol authentication is not passed, there may be forged clients or servers", Toast.LENGTH_SHORT).show();
                         }
+
+
                     }
                 });
     }

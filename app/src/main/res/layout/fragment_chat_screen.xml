@@ -6,11 +6,23 @@
     tools:context=".ui.chatScreen.ChatScreenFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:id="@+id/chatName"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:textAlignment="center" />
+
     <ListView
         android:id="@+id/listViewChat"
         android:layout_width="match_parent"
-        android:layout_height="650dp"
+        android:layout_height="566dp"
         android:layout_above="@+id/editTextMessage"
+        android:layout_below="@id/chatName"
         android:layout_marginBottom="20dp"
         android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll" />
@@ -20,7 +32,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="100dp"
         android:hint="Type your message here..." />
 
     <Button
@@ -30,7 +41,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="100dp"
         android:text="Send" />
 
 </RelativeLayout>

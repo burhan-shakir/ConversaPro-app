@@ -11,6 +11,18 @@ import java.util.Base64;
 public class AESEncryption {
     private static final String AES = "AES";
     private static final String AES_CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding";
+    private static SecretKeySpec simukey;
+
+    static {
+        try {
+            simukey = generateKey(128);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void changeDefaultKey() throws Exception {
+        simukey = generateKey(128);
+    }
 
     // Generating Keys
     public static SecretKeySpec generateKey(int n) throws Exception {
@@ -33,6 +45,13 @@ public class AESEncryption {
         System.arraycopy(encryptedBytes, 0, encryptedIVAndText, ivBytes.length, encryptedBytes.length);
         return Base64.getEncoder().encodeToString(encryptedIVAndText);
     }
+    public static String encrypt(String data) {
+        try {
+            return encrypt(data,simukey);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     // declassification
     public static String decrypt(String encryptedData, SecretKeySpec key) throws Exception {
@@ -47,6 +66,14 @@ public class AESEncryption {
         cipher.init(Cipher.DECRYPT_MODE, key, iv);
         byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
         return new String(decryptedBytes);
+    }
+
+    public static String decrypt(String encryptedData) {
+        try {
+            return decrypt(encryptedData,simukey);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // example

@@ -10,15 +10,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.conversapro.R;
+import com.example.conversapro.ui.chatScreen.ChatModel;
+
 import java.util.List;
 
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatViewHolder> {
-    private List<ChatItem> chatList;
+    private List<ChatModel> chatList;
     private int selectedPosition = RecyclerView.NO_POSITION;
 
     private final OnChatItemClickListener onChatItemClickListener;
 
-    public ChatListAdapter(List<ChatItem> chatList, OnChatItemClickListener listener) {
+    public ChatListAdapter(List<ChatModel> chatList, OnChatItemClickListener listener) {
         this.chatList = chatList;
         this.onChatItemClickListener = listener;
     }
@@ -32,8 +34,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
 
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
-        final ChatItem chatItem = chatList.get(position);
-
+        ChatModel chatItem = chatList.get(position);
+        holder.textViewChatName.setText(chatItem.getChatName());
+        holder.contactName.setText(chatItem.getRecvName());
         // Set background color based on selected state
         holder.itemView.setBackgroundColor(selectedPosition == position ? Color.LTGRAY : Color.TRANSPARENT);
 
@@ -58,12 +61,12 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
 
     public static class ChatViewHolder extends RecyclerView.ViewHolder {
         TextView contactName;
-        TextView messagePreview;
+        TextView textViewChatName;
 
         public ChatViewHolder(View itemView, OnChatItemClickListener onChatItemClickListener) {
             super(itemView);
-            contactName = itemView.findViewById(R.id.contact_name);
-            messagePreview = itemView.findViewById(R.id.message_preview);
+            textViewChatName = itemView.findViewById(R.id.contact_name);
+            contactName = itemView.findViewById(R.id.message_preview);
         }
     }
     // Interface for click events was moved to separate interface file

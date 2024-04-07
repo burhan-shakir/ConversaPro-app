@@ -6,9 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,7 @@ public class NewChatDetailsFragment extends Fragment {
     private  EditText chatNameEditText;
     private EditText chatDescriptionEditText;
     private EditText recvNameEditText;
+    private NewChatViewModel newChatViewModel;
     private FragmentNewChatDetailsBinding binding;
 
     public NewChatDetailsFragment() {
@@ -38,6 +41,7 @@ public class NewChatDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        newChatViewModel = new ViewModelProvider(requireActivity()).get(NewChatViewModel.class);
     }
 
     @Override
@@ -64,7 +68,7 @@ public class NewChatDetailsFragment extends Fragment {
                 String recvName = recvNameEditText.getText().toString().trim();
                 int roomID = generateRoomID();
                 verifyFormDetails(chatName, chatDescription, recvName, roomID);
-                //passDetailsToChatScreen(roomID, chatName,recvName);
+                passDetailsToChatScreen(roomID, chatName,recvName);
                 Navigation.findNavController(v).navigate(R.id.action_newChatDetails_to_chatScreenFragment);
             }
         });
@@ -91,7 +95,13 @@ public class NewChatDetailsFragment extends Fragment {
         return rand;
     }
     private void passDetailsToChatScreen(int roomID, String chatName, String recvName){
-        ChatDetailsTransfer listener = (ChatDetailsTransfer) getActivity();
-        listener.onChatDetailsRecv(String.valueOf(roomID), chatName, recvName);
+        newChatViewModel.setChatName(chatName);
+        newChatViewModel.setRecvName(recvName);
+        newChatViewModel.setRoomID(String.valueOf(roomID));
+        newChatViewModel.setIsNewChat("YES");
+        Log.d("NewChat", "VALUE OF NEW CHAT WAS SET TO " + newChatViewModel.getIsNewChat());
+
+        //ChatDetailsTransfer listener = (ChatDetailsTransfer) getActivity();
+        //listener.onChatDetailsRecv(String.valueOf(roomID), chatName, recvName);
     }
 }

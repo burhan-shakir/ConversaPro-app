@@ -4,31 +4,91 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import com.example.conversapro.R;
+import com.example.conversapro.ui.User;
 import com.example.conversapro.databinding.FragmentNotificationsBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
-
+    private DatabaseReference mDatabase;
+    String account, email, description;
+    TextView accountText, emailText, descriptionText;
+    Button editButton;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NotificationsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
-
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        accountText = binding.txtAccount;
+        emailText = binding.txtEmail;
+        descriptionText = binding.txtDescription;
+        editButton = binding.btnEdit;
+        mDatabase.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                account = snapshot.child("name").getValue(String.class);
+                email = snapshot.child("email").getValue(String.class);
+                description = snapshot.child("description").getValue(String.class);
+                accountText.setText(account);
+                emailText.setText(email);
+                descriptionText.setText(description);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-        final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+            }
+        });
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController controller = Navigation.findNavController(getView());
+                controller.navigate(R.id.action_navigation_notifications_to_editProfileFragment);
+            }
+        });
+        /*
+        mDatabase.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    User u = task.getResult().getValue(User.class);
+                    fillInformation(u);
+                    accountText.setText(account);
+                    emailText.setText(email);
+                    descriptionText.setText(description);
+                }
+            }
+        });
+
+         */
+        View root = binding.getRoot();
         return root;
     }
-
+    public void fillInformation(User u){
+        account = u.getName();
+        email = u.getEmail();
+        description = u.getDescription();
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

@@ -67,7 +67,7 @@ public class SignUpFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            addUser(name, email, authen.getCurrentUser().getUid());
+                            addUser(name, email, password, authen.getCurrentUser().getUid());
                             NavController controller = Navigation.findNavController(getView());
                             controller.navigate(R.id.action_signUpFragment_to_homeFragment);
                         } else {
@@ -78,12 +78,9 @@ public class SignUpFragment extends Fragment {
                         }
                     }
                 });
-
     }
-
-    private void addUser(String name, String email, String uid){
-        dbRef.child("users").child(uid).child("email").setValue(email);
-        dbRef.child("users").child(uid).child("name").setValue(name);
-        dbRef.child("users").child(uid).child("description").setValue("");
+    private void addUser(String name, String email, String password, String uid){
+        User u = new User(name, email, password, "");
+        dbRef.child("users").child(uid).setValue(u);
     }
 }

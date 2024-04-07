@@ -62,6 +62,7 @@ public class ChatScreenFragment extends Fragment{
         binding = FragmentChatScreenBinding.inflate(inflater, container, false);
         initializeViews(binding.getRoot());
         initChatDetails();
+        setUserName();
         initializeFirebase();
         sendMessage();
         initMessageListener();
@@ -86,9 +87,9 @@ public class ChatScreenFragment extends Fragment{
 
                 String message = editTextMessage.getText().toString().trim();
                 if (!TextUtils.isEmpty(message)) {
-                    String sender = getUserName(); // Set the sender's name or ID
+                     // Set the sender's name or ID
                     String receiver = getRecvName();
-                    MsgModel chatMessage = new MsgModel(message, sender, receiver);
+                    MsgModel chatMessage = new MsgModel(message, currentUserName, receiver);
                     databaseReferenceChats.child(currentRoomID).child("messages").push().setValue(chatMessage);
                     editTextMessage.setText("");
                     adapter.add(chatMessage);
@@ -117,10 +118,10 @@ public class ChatScreenFragment extends Fragment{
             }
         });
     }
-    private String getUserName() {
+    private void setUserName() {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference dbReference = FirebaseDatabase.getInstance().getReference("users");
-        dbReference.child(uid).addValueEventListener(new ValueEventListener() {
+        mDatabase.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 currentUserName = snapshot.child("name").getValue(String.class);
@@ -130,8 +131,6 @@ public class ChatScreenFragment extends Fragment{
 
             }
         });
-        currentUserName = "alice"; //Until login resolved
-        return currentUserName;
     }
     private String getRecvName() {
         return currentRcvName;

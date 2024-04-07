@@ -11,8 +11,13 @@ public class AuthenticationServer {
     public AuthenticationServer(AESEncryption aes) {
         this.aes = aes;
         // Added preset users
-        this.userPasswords.put("alice", "password123");
-        this.userPasswords.put("bob", "password321");
+        this.userPasswords.put("yuk42@mcmaster.ca", "123456");
+        this.userPasswords.put("xuhuixin2003@gmail.com", "123456");
+        this.userPasswords.put("b@gmail.com", "123456");
+        this.userPasswords.put("loux8@mcmaster.ca", "123456");
+        this.userPasswords.put("hatoumg@mcmaster.ca", "123456");
+
+
     }
 
     public static HashMap<String, String> getUserPasswords(String key) {

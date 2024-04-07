@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.EditProfileFragment">
+    tools:context=".ui.EditProfile">
+
     <ImageView
         android:id="@+id/accountImage"
         android:layout_width="110dp"
@@ -22,7 +22,8 @@
         android:text="Account: " />
 
     <EditText
-        android:id="@+id/txt_account"
+        android:id="@+id/edit_account"
+        android:background="@drawable/edt_background"
         android:layout_width="120dp"
         android:layout_height="20dp"
         android:layout_below="@id/accountImage"
@@ -37,10 +38,11 @@
         android:layout_below="@id/account"
         android:text="Email: " />
     <EditText
-        android:id="@+id/txt_email"
+        android:id="@+id/edit_email"
+        android:background="@drawable/edt_background"
         android:layout_width="120dp"
         android:layout_height="20dp"
-        android:layout_below="@id/txt_account"
+        android:layout_below="@id/edit_account"
         android:layout_marginLeft="160dp"
         android:layout_marginTop="20dp"/>
     <TextView
@@ -52,20 +54,22 @@
         android:layout_below="@id/email"
         android:text="Description: " />
     <EditText
-        android:id="@+id/txt_description"
+        android:id="@+id/edit_description"
+        android:background="@drawable/edt_background"
         android:layout_width="380dp"
         android:layout_height="300dp"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/description"/>
+
     <Button
-        android:id="@+id/btn_edit"
+        android:id="@+id/update_btn"
         android:layout_width="350dp"
         android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/txt_description"
+        android:layout_below="@id/edit_description"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/edit"
-        android:text="Update Profile"/>
+        android:layout_marginTop="20dp"
+        android:background="@color/holo_green_dark"
+        android:text="Update Profile" />
 
 </RelativeLayout>

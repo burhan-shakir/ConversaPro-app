@@ -52,7 +52,7 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 NavController controller = Navigation.findNavController(getView());
-                controller.navigate(R.id.action_navigation_notifications_to_editProfileFragment);
+                controller.navigate(R.id.action_navigation_notifications_to_editProfile);
             }
         });
         View root = binding.getRoot();

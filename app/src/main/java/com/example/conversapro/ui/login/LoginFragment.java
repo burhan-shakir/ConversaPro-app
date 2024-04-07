@@ -23,6 +23,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.conversapro.KerberosProtocol.Client;
+import com.example.conversapro.KerberosProtocol.Encryption.AESEncryption;
+import com.example.conversapro.KerberosProtocol.KDC.AuthenticationServer;
+import com.example.conversapro.KerberosProtocol.KDC.KeyDistributionCenter;
 import com.example.conversapro.databinding.FragmentLoginBinding;
 
 import com.example.conversapro.R;
@@ -163,6 +167,22 @@ public class LoginFragment extends Fragment {
     }
 
     private void login(String email, String password){
+
+        AESEncryption aes = new AESEncryption();
+        AuthenticationServer as = new AuthenticationServer(aes);
+        KeyDistributionCenter kdc = new KeyDistributionCenter(as, aes);
+        Client client = new Client(kdc, aes, email, password);
+
+        if (client.requestService("FileService")) {
+            // Sign in success, update UI with the signed-in user's information
+            Toast.makeText(getContext().getApplicationContext(), "Valid clients, internal authorized users, environmental testing passed", Toast.LENGTH_LONG).show();
+
+        } else {
+            // If sign in fails, display a message to the user.
+            Toast.makeText(getContext().getApplicationContext(), "Potential Risk Warning, unauthorized third-party clients or users, there may be potential environmental hazards, take care to avoid privacy exchanges", Toast.LENGTH_SHORT).show();
+        }
+
+
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
                     @Override

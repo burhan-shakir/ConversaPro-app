@@ -20,8 +20,14 @@ import android.widget.Toast;
 
 import com.example.conversapro.R;
 import com.example.conversapro.databinding.FragmentNewChatDetailsBinding;
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +37,7 @@ public class NewChatDetailsFragment extends Fragment {
     private  EditText chatNameEditText;
     private EditText chatDescriptionEditText;
     private EditText recvNameEditText;
-    private NewChatViewModel newChatViewModel;
+    private String userName;
     private FragmentNewChatDetailsBinding binding;
 
     public NewChatDetailsFragment() {
@@ -41,7 +47,6 @@ public class NewChatDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        newChatViewModel = new ViewModelProvider(requireActivity()).get(NewChatViewModel.class);
     }
 
     @Override
@@ -68,8 +73,7 @@ public class NewChatDetailsFragment extends Fragment {
                 String recvName = recvNameEditText.getText().toString().trim();
                 int roomID = generateRoomID();
                 verifyFormDetails(chatName, chatDescription, recvName, roomID);
-                passDetailsToChatScreen(roomID, chatName,recvName);
-                Navigation.findNavController(v).navigate(R.id.action_newChatDetails_to_chatScreenFragment);
+                navigateToChatScreen(roomID, chatName,recvName);
             }
         });
     }
@@ -79,29 +83,44 @@ public class NewChatDetailsFragment extends Fragment {
             Toast.makeText(getContext().getApplicationContext(), "Please fill in all details!", Toast.LENGTH_LONG).show();
         }
         else {
-            ChatModel chatModel = new ChatModel(chatName, chatDescription, recvName, getUserID(), roomID);
+            ChatModel chatModel = new ChatModel(chatName, chatDescription, recvName, getUserName(), roomID);
             DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("chats").child(String.valueOf(roomID));
             database.push().setValue(chatModel);
         }
     }
 
-    private String getUserID(){
-        // TO DO: Get the current User ID
-        return "Burhan";
+    private String getUserName(){
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference dbReference = FirebaseDatabase.getInstance().getReference("users");
+        dbReference.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userName = snapshot.child("name").getValue(String.class);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        userName = "alice"; //Until login solved
+        return userName;
     }
     private int generateRoomID(){
         Random random = new Random();
         int rand = random.nextInt(100);
         return rand;
     }
-    private void passDetailsToChatScreen(int roomID, String chatName, String recvName){
-        newChatViewModel.setChatName(chatName);
-        newChatViewModel.setRecvName(recvName);
-        newChatViewModel.setRoomID(String.valueOf(roomID));
-        newChatViewModel.setIsNewChat("YES");
-        Log.d("NewChat", "VALUE OF NEW CHAT WAS SET TO " + newChatViewModel.getIsNewChat());
-
-        //ChatDetailsTransfer listener = (ChatDetailsTransfer) getActivity();
-        //listener.onChatDetailsRecv(String.valueOf(roomID), chatName, recvName);
+    private void navigateToChatScreen(int roomID, String chatName, String recvName){
+        Fragment chatScreen = new ChatScreenFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("chatName", chatName);
+        bundle.putString("roomID", String.valueOf(roomID));
+        bundle.putString("recvName", recvName);
+        chatScreen.setArguments(bundle);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainerView2,chatScreen, "chat_screen_fragment");
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
+
 }

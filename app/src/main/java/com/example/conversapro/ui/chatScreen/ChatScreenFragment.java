@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.conversapro.R;
 import com.example.conversapro.databinding.FragmentChatScreenBinding;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,21 +39,18 @@ public class ChatScreenFragment extends Fragment{
     private TextView chatName;
     private DatabaseReference databaseReferenceChats;
     private List<MsgModel> messages;
+    private String currentUserName;
     private String currentRoomID;
     private String currentChatName;
     private String currentRcvName;
-    private String isCurrChatNewChat;
     private ChatAdapter adapter;
-    private NewChatViewModel newChatViewModel;
     public FragmentChatScreenBinding binding;
-    private ChatModel chatModel;
     public ChatScreenFragment() {
         // Required empty public constructor
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        newChatViewModel = new ViewModelProvider(requireActivity()).get(NewChatViewModel.class);
     }
 
     @Override
@@ -63,8 +61,7 @@ public class ChatScreenFragment extends Fragment{
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
         binding = FragmentChatScreenBinding.inflate(inflater, container, false);
         initializeViews(binding.getRoot());
-        getNewChatDetails();
-        //isNewChat();
+        initChatDetails();
         initializeFirebase();
         sendMessage();
         initMessageListener();
@@ -82,20 +79,6 @@ public class ChatScreenFragment extends Fragment{
         databaseReferenceChats = FirebaseDatabase.getInstance().getReference().child("chats");
     }
 
-    private void setChatName() {
-        /**databaseReferenceChats.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                chatModel = snapshot.getValue(ChatModel.class);
-
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });**/
-        chatName.setText(currentChatName);
-    }
     private void sendMessage() {
         buttonSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +99,7 @@ public class ChatScreenFragment extends Fragment{
 
     }
     private void initMessageListener(){
-        databaseReferenceChats.child("69").child("messages").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReferenceChats.child(currentRoomID).child("messages").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 messages = new ArrayList<>();
@@ -135,46 +118,35 @@ public class ChatScreenFragment extends Fragment{
         });
     }
     private String getUserName() {
-        // TO DO: Fetch the user name to send to database in message
-        return "Jane Doe"; // Placeholder name
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference dbReference = FirebaseDatabase.getInstance().getReference("users");
+        dbReference.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                currentUserName = snapshot.child("name").getValue(String.class);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        currentUserName = "alice"; //Until login resolved
+        return currentUserName;
     }
     private String getRecvName() {
-        // TO DO: Fetch the recvr name to send to database in message
-        return currentRcvName; // Placeholder name
+        return currentRcvName;
     }
-    private String getRoomID() {
-        // TO DO: Fetch the roomID to send to database in message
-        return currentRoomID; // Placeholder name
-    }
+    private void initChatDetails(){
 
-    private void isNewChat(){
-        newChatViewModel.getIsNewChat().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String isNewChat) {
-                isCurrChatNewChat = isNewChat;
-            }
-        });
-    }
+        if (getArguments() != null) {
+            currentRoomID = getArguments().getString("roomID");
+            currentChatName = getArguments().getString("chatName");
+            currentRcvName = getArguments().getString("recvName");
+            chatName.setText(currentChatName);
+        }
+        else{
+            Toast.makeText(getContext(), "CHAT SCREEN LOAD FAILED", Toast.LENGTH_SHORT).show();
+        }
 
-    private void getNewChatDetails(){
-        newChatViewModel.getChatName().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String chatNameNewChat) {
-                Toast.makeText(requireContext(), chatNameNewChat, Toast.LENGTH_SHORT).show();
-                chatName.setText(chatNameNewChat);
-            }
-        });
-        newChatViewModel.getRoomID().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String roomIDNewChat) {
-                currentRoomID = roomIDNewChat;
-            }
-        });
-        newChatViewModel.getRecvName().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String recvNameNewChat) {
-                currentRcvName = recvNameNewChat;
-            }
-        });
     }
 }

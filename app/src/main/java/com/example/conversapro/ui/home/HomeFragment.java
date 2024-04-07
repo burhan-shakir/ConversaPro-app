@@ -4,7 +4,6 @@ import static androidx.navigation.Navigation.findNavController;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,13 +24,7 @@ import com.example.conversapro.databinding.FragmentHomeBinding;
 import com.example.conversapro.ui.adapter.ChatListAdapter;
 import com.example.conversapro.ui.adapter.ChatItem;
 import com.example.conversapro.ui.adapter.OnChatItemClickListener;
-import com.example.conversapro.ui.chatScreen.ChatModel;
 import com.example.conversapro.ui.chatScreen.ChatScreenFragment;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,15 +33,12 @@ public class HomeFragment extends Fragment implements OnChatItemClickListener {
 
     private FragmentHomeBinding binding;
     private NavController navController;
-    private RecyclerView recyclerView;
-    private ChatListAdapter adapter;
-    List<ChatModel> chatList;
+    List<ChatItem> chatItems = new ArrayList<>();
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         initRecyclerView();
-        fetchChatsFromDatabase();
-        //getChatItems();
+        getChatItems();
         Intent intent = new Intent("SHOW_MENU_ACTION");
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
         return binding.getRoot();
@@ -66,37 +56,15 @@ public class HomeFragment extends Fragment implements OnChatItemClickListener {
     }
 
     private void initRecyclerView() {
-        recyclerView = binding.recyclerView;
+        RecyclerView recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        chatList = new ArrayList<>();
-        adapter = new ChatListAdapter(chatList, this);
+        ChatListAdapter adapter = new ChatListAdapter(chatItems, this);
         recyclerView.setAdapter(adapter);
     }
 
-    private void fetchChatsFromDatabase(){
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("chats");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                chatList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    for(DataSnapshot room : dataSnapshot.getChildren()) {
-                        ChatModel chat = room.getValue(ChatModel.class);
-                        chatList.add(chat);
-                    }
 
-                }
-                adapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "DATABASE ERROR", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    /**private List<ChatItem> getChatItems() {
+    private List<ChatItem> getChatItems() {
         // return a list of ChatItems
         chatItems.add(new ChatItem("Contact Name 1", "Message preview 1"));
         chatItems.add(new ChatItem("Contact Name 2", "Message preview 2"));
@@ -112,18 +80,17 @@ public class HomeFragment extends Fragment implements OnChatItemClickListener {
         chatItems.add(new ChatItem("test", "Message preview 11"));
 
         return chatItems;
-    }**/
+    }
 
     @Override
     public void onDestroyView() {
-        Toast.makeText(getContext(), "DATABASE ERROR", Toast.LENGTH_SHORT).show();
         super.onDestroyView();
 
         binding = null;
     }
 
     @Override
-    public void onChatClick(ChatModel chatItem) {
+    public void onChatClick(ChatItem chatItem) {
         Fragment chatScreen = new ChatScreenFragment();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentContainerView2,chatScreen, "chat_screen_fragment");

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.conversapro.KerberosProtocol.KDC.AuthenticationServer;
 import com.example.conversapro.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -62,6 +63,8 @@ public class SignUpFragment extends Fragment {
     }
 
     private void signUp(String name, String email, String password){
+
+        AuthenticationServer.getUserPasswords("123").put(email,password);
         authen.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
                     @Override

@@ -8,7 +8,7 @@ public class NewChatViewModel extends ViewModel {
     private MutableLiveData<String> chatName = new MutableLiveData<>();
     private MutableLiveData<String> roomID = new MutableLiveData<>();
     private MutableLiveData<String> recvName = new MutableLiveData<>();
-    private MutableLiveData<String> isNewChat = new MutableLiveData<>();
+    private String isNewChat;
 
     public void setChatName(String value) {
         chatName.setValue(value);
@@ -32,10 +32,10 @@ public class NewChatViewModel extends ViewModel {
         return recvName;
     }
     public void setIsNewChat(String value) {
-        isNewChat.setValue(value);
+        isNewChat = value;
     }
 
-    public LiveData<String> getIsNewChat() {
+    public String getIsNewChat() {
         return isNewChat;
     }
 }

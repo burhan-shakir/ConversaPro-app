@@ -64,7 +64,7 @@ public class NewChatDetailsFragment extends Fragment {
                 String recvName = recvNameEditText.getText().toString().trim();
                 int roomID = generateRoomID();
                 verifyFormDetails(chatName, chatDescription, recvName, roomID);
-                passDetailsToChatScreen(roomID, chatName,recvName);
+                //passDetailsToChatScreen(roomID, chatName,recvName);
                 Navigation.findNavController(v).navigate(R.id.action_newChatDetails_to_chatScreenFragment);
             }
         });

@@ -65,7 +65,7 @@
 
     <Button
         android:id="@+id/register"
-        android:layout_width="101dp"
+        android:layout_width="110dp"
         android:layout_height="41dp"
         android:layout_gravity="start"
         android:layout_marginStart="48dp"

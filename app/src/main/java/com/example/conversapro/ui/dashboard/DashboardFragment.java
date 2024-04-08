@@ -9,7 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.conversapro.R;
 import com.example.conversapro.databinding.FragmentDashboardBinding;
 
 public class DashboardFragment extends Fragment {
@@ -26,6 +28,13 @@ public class DashboardFragment extends Fragment {
 
         final TextView textView = binding.textDashboard;
         dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        binding.clickButton.setOnClickListener(v -> {
+            // Use the Navigation Component to navigate to the StreamSetupFragment
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_startStream);
+        });
+
         return root;
     }
 

@@ -100,7 +100,7 @@ public class StartFragment extends Fragment {
             @Override
             public void run() {
                 NavController controller = Navigation.findNavController(getView());
-//                controller.navigate(R.id.action_startFragment_to_loginFragment);
+//
                 //skip login for test merge
                 controller.navigate(R.id.action_startFragment_to_loginFragment);
 

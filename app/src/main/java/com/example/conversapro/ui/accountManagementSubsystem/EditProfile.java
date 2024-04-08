@@ -1,4 +1,4 @@
-package com.example.conversapro.ui.login;
+package com.example.conversapro.ui.accountManagementSubsystem;
 
 import android.os.Bundle;
 
@@ -16,8 +16,6 @@ import com.example.conversapro.R;
 import com.example.conversapro.databinding.FragmentEditProfileBinding;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.Base64;
 
 public class EditProfile extends Fragment {
     private FragmentEditProfileBinding binding;

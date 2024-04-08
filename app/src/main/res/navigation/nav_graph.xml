@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.conversapro.ui.login.LoginFragment"
+        android:name="com.example.conversapro.ui.accountManagementSubsystem.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -87,7 +87,7 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.conversapro.ui.login.NotificationsFragment"
+        android:name="com.example.conversapro.ui.accountManagementSubsystem.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" >
         <action
@@ -118,7 +118,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.example.conversapro.ui.login.SignUpFragment"
+        android:name="com.example.conversapro.ui.accountManagementSubsystem.SignUpFragment"
         android:label="SignUpFragment" >
         <action
             android:id="@+id/action_signUpFragment_to_homeFragment"
@@ -131,7 +131,7 @@
     </fragment>
     <fragment
         android:id="@+id/editProfile"
-        android:name="com.example.conversapro.ui.login.EditProfile"
+        android:name="com.example.conversapro.ui.accountManagementSubsystem.EditProfile"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" >
         <action

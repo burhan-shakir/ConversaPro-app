@@ -1,4 +1,4 @@
-package com.example.conversapro.ui.dashboard;
+package com.example.conversapro.ui.livestreamSubsystem;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

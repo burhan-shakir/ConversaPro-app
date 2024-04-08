@@ -53,7 +53,7 @@ public class SignUpFragment extends Fragment {
 
     private void signUp(String name, String email, String password) {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        User user = new User(name, email, password, "");
+        UserModel user = new UserModel(name, email, password, "");
         db.child("users").child(Base64.getEncoder().encodeToString(email.getBytes())).setValue(user).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 NavController controller = Navigation.findNavController(getView());

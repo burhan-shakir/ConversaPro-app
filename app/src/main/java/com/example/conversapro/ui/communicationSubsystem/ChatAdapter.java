@@ -1,4 +1,4 @@
-package com.example.conversapro.ui.chatScreen;
+package com.example.conversapro.ui.communicationSubsystem;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,12 +1,12 @@
 package com.example.conversapro.ui;
 // Model for a User with all attribute getters and setters (Entity class)
-public class User {
+public class UserModel {
     String name;
     String email;
     String password;
     String description;
 
-    public User(String name, String email, String password, String description){
+    public UserModel(String name, String email, String password, String description){
         this.name = name;
         this.email = email;
         this.password = password;

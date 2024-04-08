@@ -1,4 +1,4 @@
-package com.example.conversapro.ui.home;
+package com.example.conversapro.ui.communicationSubsystem;
 
 import static androidx.navigation.Navigation.findNavController;
 
@@ -19,10 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.conversapro.R;
 import com.example.conversapro.databinding.FragmentHomeBinding;
-import com.example.conversapro.ui.chatScreen.ChatListAdapter;
-import com.example.conversapro.ui.chatScreen.OnChatItemClickListener;
-import com.example.conversapro.ui.chatScreen.ChatModel;
-import com.example.conversapro.ui.chatScreen.ChatScreenFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

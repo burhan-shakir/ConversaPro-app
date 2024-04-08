@@ -1,4 +1,4 @@
-package com.example.conversapro.ui.chatScreen;
+package com.example.conversapro.ui.communicationSubsystem;
 
 import android.content.Intent;
 import android.os.Bundle;

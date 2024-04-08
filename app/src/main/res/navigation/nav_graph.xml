@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.conversapro.ui.home.HomeFragment"
+        android:name="com.example.conversapro.ui.communicationSubsystem.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -61,7 +61,7 @@
 
     <fragment
         android:id="@+id/chatDetailFragment"
-        android:name="com.example.conversapro.ui.home.HomeFragment"
+        android:name="com.example.conversapro.ui.communicationSubsystem.HomeFragment"
         android:label="ChatDetailFragment" >
         <action
             android:id="@+id/action_chatDetailFragment_to_homeFragment"
@@ -70,7 +70,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.conversapro.ui.dashboard.DashboardFragment"
+        android:name="com.example.conversapro.ui.livestreamSubsystem.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard">
         <action
@@ -80,7 +80,7 @@
 
     <fragment
         android:id="@+id/streamSetupFragment"
-        android:name="com.example.conversapro.ui.dashboard.StreamSetupFragment"
+        android:name="com.example.conversapro.ui.livestreamSubsystem.StreamSetupFragment"
         android:label="Stream Setup"
         tools:layout="@layout/fragment_stream_setup" />
 
@@ -97,7 +97,7 @@
 
     <fragment
         android:id="@+id/newChatDetails"
-        android:name="com.example.conversapro.ui.chatScreen.NewChatDetailsFragment"
+        android:name="com.example.conversapro.ui.communicationSubsystem.NewChatDetailsFragment"
         android:label="fragment_new_chat_details"
         tools:layout="@layout/fragment_new_chat_details" >
         <action
@@ -109,7 +109,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatScreenFragment"
-        android:name="com.example.conversapro.ui.chatScreen.ChatScreenFragment"
+        android:name="com.example.conversapro.ui.communicationSubsystem.ChatScreenFragment"
         android:label="fragment_chat_screen"
         tools:layout="@layout/fragment_chat_screen" >
         <action

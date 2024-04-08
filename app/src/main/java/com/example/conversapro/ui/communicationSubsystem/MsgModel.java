@@ -1,4 +1,4 @@
-package com.example.conversapro.ui.chatScreen;
+package com.example.conversapro.ui.communicationSubsystem;
 
 import java.util.Date;
 // Models all fields required in a message with their getters and setters (entity class)

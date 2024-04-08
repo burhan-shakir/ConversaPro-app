@@ -1,4 +1,4 @@
-package com.example.conversapro.ui.chatScreen;
+package com.example.conversapro.ui.communicationSubsystem;
 
 import android.os.Bundle;
 
@@ -6,11 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 // Starting a new chat view - handles user interaction with "Create New Chat" feature and the form that requires submission (Boundary class)
 public class NewChatDetailsFragment extends Fragment {

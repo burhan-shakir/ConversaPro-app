@@ -1,4 +1,4 @@
-package com.example.conversapro.ui.chatScreen;
+package com.example.conversapro.ui.communicationSubsystem;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,11 +8,13 @@
     tools:context=".ui.chatScreen.NewChatDetailsFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
     <EditText
         android:id="@+id/chatNameNewChatForm"
         android:layout_width="295dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="96dp"
+        android:layout_marginLeft="55dp"
         android:ems="10"
         android:hint="Chat Name"
         app:layout_constraintHorizontal_bias="0.184"
@@ -24,6 +26,7 @@
         android:layout_width="295dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="172dp"
+        android:layout_marginLeft="55dp"
         android:ems="10"
         android:hint="Description"
         app:layout_constraintHorizontal_bias="0.184"
@@ -35,6 +38,7 @@
         android:layout_width="295dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="255dp"
+        android:layout_marginLeft="55dp"
         android:ems="10"
         android:hint="Chat Invitee"
         app:layout_constraintHorizontal_bias="0.184"
@@ -47,7 +51,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="365dp"
         android:layout_marginLeft="150dp"
-        android:backgroundTint="#D500F9"
         android:text="SUBMIT"
         app:layout_constraintEnd_toEndOf="@id/descriptionNewChatForm"
         app:layout_constraintHorizontal_bias="0.425"

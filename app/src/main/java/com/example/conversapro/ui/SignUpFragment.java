@@ -15,14 +15,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.conversapro.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.Base64;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,16 +31,12 @@ public class SignUpFragment extends Fragment {
 
     private EditText edtName, edtEmail, edtPassword;
     private Button btnSignUp;
-    private FirebaseAuth authen;
-    private DatabaseReference dbRef;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
-        authen = FirebaseAuth.getInstance();
-        dbRef = FirebaseDatabase.getInstance().getReference();
         edtName = view.findViewById(R.id.edt_name);
         edtEmail = view.findViewById(R.id.edt_email);
         edtPassword = view.findViewById(R.id.edt_password);
@@ -61,26 +55,20 @@ public class SignUpFragment extends Fragment {
         return view;
     }
 
-    private void signUp(String name, String email, String password){
-        authen.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            addUser(name, email, password, authen.getCurrentUser().getUid());
-                            NavController controller = Navigation.findNavController(getView());
-                            controller.navigate(R.id.action_signUpFragment_to_homeFragment);
-                        } else {
-                            if (task.getException() != null) {
-                                String errorMessage = task.getException().getMessage();
-                                Toast.makeText(requireContext(), "Sign up failed: " + errorMessage, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-                });
-    }
-    private void addUser(String name, String email, String password, String uid){
-        User u = new User(name, email, password, "");
-        dbRef.child("users").child(uid).setValue(u);
+    private void signUp(String name, String email, String password) {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        User user = new User(name, email, password, "");
+        db.child("users").child(Base64.getEncoder().encodeToString(email.getBytes())).setValue(user).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                NavController controller = Navigation.findNavController(getView());
+                controller.navigate(R.id.action_signUpFragment_to_homeFragment);
+            } else {
+                if (task.getException() != null) {
+                    String errorMessage = task.getException().getMessage();
+                    Toast.makeText(requireContext(), "Sign up failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 }

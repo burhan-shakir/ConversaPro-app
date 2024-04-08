@@ -18,11 +18,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.example.conversapro.KerberosProtocol.Client;
 import com.example.conversapro.R;
 import com.example.conversapro.databinding.FragmentNewChatDetailsBinding;
-import com.google.firebase.Firebase;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,6 +56,7 @@ public class NewChatDetailsFragment extends Fragment {
         chatNameEditText = v.findViewById(R.id.chatNameNewChatForm);
         chatDescriptionEditText = v.findViewById(R.id.descriptionNewChatForm);
         recvNameEditText = v.findViewById(R.id.chatInviteeNewChatForm);
+        setUserName();
 
         return binding.getRoot();
     }
@@ -83,14 +82,14 @@ public class NewChatDetailsFragment extends Fragment {
             Toast.makeText(getContext().getApplicationContext(), "Please fill in all details!", Toast.LENGTH_LONG).show();
         }
         else {
-            ChatModel chatModel = new ChatModel(chatName, chatDescription, recvName, getUserName(), roomID);
+            ChatModel chatModel = new ChatModel(chatName, chatDescription, recvName, userName, roomID);
             DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("chats").child(String.valueOf(roomID));
             database.push().setValue(chatModel);
         }
     }
 
-    private String getUserName(){
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private void setUserName(){
+        String uid = Client.getInstance().getUid();
         DatabaseReference dbReference = FirebaseDatabase.getInstance().getReference("users");
         dbReference.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
@@ -102,8 +101,6 @@ public class NewChatDetailsFragment extends Fragment {
 
             }
         });
-        userName = "alice"; //Until login solved
-        return userName;
     }
     private int generateRoomID(){
         Random random = new Random();

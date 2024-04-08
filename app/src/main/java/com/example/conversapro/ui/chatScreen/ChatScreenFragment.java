@@ -5,12 +5,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +17,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.conversapro.KerberosProtocol.Client;
 import com.example.conversapro.R;
 import com.example.conversapro.databinding.FragmentChatScreenBinding;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -62,6 +59,7 @@ public class ChatScreenFragment extends Fragment{
         binding = FragmentChatScreenBinding.inflate(inflater, container, false);
         initializeViews(binding.getRoot());
         initChatDetails();
+        setUserName();
         initializeFirebase();
         sendMessage();
         initMessageListener();
@@ -86,9 +84,9 @@ public class ChatScreenFragment extends Fragment{
 
                 String message = editTextMessage.getText().toString().trim();
                 if (!TextUtils.isEmpty(message)) {
-                    String sender = getUserName(); // Set the sender's name or ID
+                     // Set the sender's name or ID
                     String receiver = getRecvName();
-                    MsgModel chatMessage = new MsgModel(message, sender, receiver);
+                    MsgModel chatMessage = new MsgModel(message, currentUserName, receiver);
                     databaseReferenceChats.child(currentRoomID).child("messages").push().setValue(chatMessage);
                     editTextMessage.setText("");
                     adapter.add(chatMessage);
@@ -117,10 +115,10 @@ public class ChatScreenFragment extends Fragment{
             }
         });
     }
-    private String getUserName() {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference dbReference = FirebaseDatabase.getInstance().getReference("users");
-        dbReference.child(uid).addValueEventListener(new ValueEventListener() {
+    private void setUserName() {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        String uid = Client.getInstance().getUid();
+        mDatabase.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 currentUserName = snapshot.child("name").getValue(String.class);
@@ -130,8 +128,6 @@ public class ChatScreenFragment extends Fragment{
 
             }
         });
-        currentUserName = "alice"; //Until login resolved
-        return currentUserName;
     }
     private String getRecvName() {
         return currentRcvName;

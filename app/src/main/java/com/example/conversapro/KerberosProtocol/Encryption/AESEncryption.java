@@ -5,8 +5,11 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.KeyGenerator;
+
+import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Random;
 
 public class AESEncryption {
     private static final String AES = "AES";
@@ -15,13 +18,13 @@ public class AESEncryption {
 
     static {
         try {
-            simukey = generateKey(128);
+            simukey = generateKey(256);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
     public static void changeDefaultKey() throws Exception {
-        simukey = generateKey(128);
+        simukey = generateKey(256);
     }
 
     // Generating Keys
@@ -30,6 +33,12 @@ public class AESEncryption {
         keyGenerator.init(n, SecureRandom.getInstanceStrong());
         byte[] keyBytes = keyGenerator.generateKey().getEncoded();
         return new SecretKeySpec(keyBytes, AES);
+    }
+
+    public static SecretKeySpec generateKeyFromPassword(String password) throws Exception {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] key = digest.digest(password.getBytes());
+        return new SecretKeySpec(key, AES);
     }
 
     // encrypted
@@ -79,7 +88,7 @@ public class AESEncryption {
     // example
     public static void main(String[] args) throws Exception {
         // Generating Keys
-        SecretKeySpec key = generateKey(128);
+        SecretKeySpec key = generateKey(256);
 
         System.out.println(key.getEncoded());
         // encrypted

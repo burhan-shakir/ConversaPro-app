@@ -1,4 +1,4 @@
-package com.example.conversapro.ui.notifications;
+package com.example.conversapro.ui.login;
 
 import android.app.Activity;
 import android.content.Intent;

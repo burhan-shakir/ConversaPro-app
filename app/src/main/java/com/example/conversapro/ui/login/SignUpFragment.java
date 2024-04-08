@@ -1,4 +1,4 @@
-package com.example.conversapro.ui;
+package com.example.conversapro.ui.login;
 
 import android.os.Bundle;
 

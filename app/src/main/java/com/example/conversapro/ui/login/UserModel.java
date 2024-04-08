@@ -1,4 +1,4 @@
-package com.example.conversapro.ui;
+package com.example.conversapro.ui.login;
 // Model for a User with all attribute getters and setters (Entity class)
 public class UserModel {
     String name;

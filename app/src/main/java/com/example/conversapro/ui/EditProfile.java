@@ -19,11 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Base64;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EditProfile#} factory method to
- * create an instance of this fragment.
- */
 public class EditProfile extends Fragment {
     private FragmentEditProfileBinding binding;
     private DatabaseReference mDatabase;

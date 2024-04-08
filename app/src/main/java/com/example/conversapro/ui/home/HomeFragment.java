@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// ChatList View where a users existing chats are displayed
+// ChatList View where a users existing chats are displayed (Boundary class)
 // It is the homepage the user is directed to following login/signup
 public class HomeFragment extends Fragment implements OnChatItemClickListener {
 

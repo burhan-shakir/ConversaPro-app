@@ -22,11 +22,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Base64;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SignUpFragment#} factory method to
- * create an instance of this fragment.
- */
+
 public class SignUpFragment extends Fragment {
 
     private EditText edtName, edtEmail, edtPassword;

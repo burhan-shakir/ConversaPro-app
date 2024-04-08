@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.conversapro.R;
+// View for individual chat in the chat list (Boundary class)
 
 public class ChatDetailFragment extends Fragment {
 

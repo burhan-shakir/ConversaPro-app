@@ -43,7 +43,7 @@ public class TicketGratingServer {
 
         public static TGSResponse encode(SecretKeySpec ssKey, SecretKeySpec sessionKey, String userId) {
             try {
-                SecretKeySpec csKey = AESEncryption.generateKey(128);
+                SecretKeySpec csKey = AESEncryption.generateKey(256);
                 String messageE = Base64.getEncoder().encodeToString(csKey.getEncoded()) + ":" + userId + ":" + System.currentTimeMillis();
                 String messageF = Base64.getEncoder().encodeToString(csKey.getEncoded());
 

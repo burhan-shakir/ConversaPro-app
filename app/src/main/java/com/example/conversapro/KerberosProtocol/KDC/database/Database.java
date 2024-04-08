@@ -1,4 +1,4 @@
-package com.example.conversapro.KerberosProtocol.KDC;
+package com.example.conversapro.KerberosProtocol.KDC.database;
 
 import java.util.function.Function;
 

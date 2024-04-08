@@ -3,12 +3,8 @@ package com.example.conversapro.KerberosProtocol;
 import com.example.conversapro.KerberosProtocol.Encryption.AESEncryption;
 import com.example.conversapro.KerberosProtocol.KDC.AuthenticationServer;
 import com.example.conversapro.KerberosProtocol.KDC.ChatServiceServer;
-import com.example.conversapro.KerberosProtocol.KDC.Database;
-import com.example.conversapro.KerberosProtocol.KDC.MockDatabase;
+import com.example.conversapro.KerberosProtocol.KDC.database.Database;
 import com.example.conversapro.KerberosProtocol.KDC.TicketGratingServer;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 
 import javax.crypto.spec.SecretKeySpec;
 
@@ -20,8 +16,8 @@ public class Server {
 
     public Server(Database database) {
         try {
-            SecretKeySpec tgsKey = AESEncryption.generateKey(128);
-            SecretKeySpec ssKey = AESEncryption.generateKey(128);
+            SecretKeySpec tgsKey = AESEncryption.generateKey(256);
+            SecretKeySpec ssKey = AESEncryption.generateKey(256);
             authenticationServer = new AuthenticationServer(database, tgsKey);
             ticketGratingServer = new TicketGratingServer(tgsKey, ssKey);
             chatServiceServer = new ChatServiceServer(ssKey);

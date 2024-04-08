@@ -18,11 +18,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.example.conversapro.KerberosProtocol.Client;
 import com.example.conversapro.R;
 import com.example.conversapro.databinding.FragmentNewChatDetailsBinding;
-import com.google.firebase.Firebase;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -91,7 +89,7 @@ public class NewChatDetailsFragment extends Fragment {
     }
 
     private void setUserName(){
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uid = Client.getInstance().getUid();
         DatabaseReference dbReference = FirebaseDatabase.getInstance().getReference("users");
         dbReference.child(uid).addValueEventListener(new ValueEventListener() {
             @Override

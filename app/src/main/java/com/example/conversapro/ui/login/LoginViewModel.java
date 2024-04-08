@@ -6,39 +6,27 @@ import androidx.lifecycle.ViewModel;
 
 import android.util.Patterns;
 
-import com.example.conversapro.data.LoginRepository;
-import com.example.conversapro.data.Result;
-import com.example.conversapro.data.model.LoggedInUser;
 import com.example.conversapro.R;
 
 public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
-    private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    private LoginRepository loginRepository;
+    private MutableLiveData<Boolean> loginResult = new MutableLiveData<>();
 
-    LoginViewModel(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
+    LoginViewModel() {
+        loginResult.setValue(null);
     }
 
     LiveData<LoginFormState> getLoginFormState() {
         return loginFormState;
     }
 
-    LiveData<LoginResult> getLoginResult() {
+    LiveData<Boolean> getLoginResult() {
         return loginResult;
     }
 
-    public void login(String username, String password) {
-        // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = loginRepository.login(username, password);
-
-        if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-        } else {
-            loginResult.setValue(new LoginResult(R.string.login_failed));
-        }
+    public void setLoginResult(Boolean loginResult) {
+        this.loginResult.setValue(loginResult);
     }
 
     public void loginDataChanged(String username, String password) {

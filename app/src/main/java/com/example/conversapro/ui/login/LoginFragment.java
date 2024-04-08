@@ -26,21 +26,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.conversapro.KerberosProtocol.Client;
-import com.example.conversapro.KerberosProtocol.Encryption.AESEncryption;
-import com.example.conversapro.KerberosProtocol.KDC.AuthenticationServer;
 import com.example.conversapro.databinding.FragmentLoginBinding;
 
 import com.example.conversapro.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginFragment extends Fragment {
 
     private LoginViewModel loginViewModel;
     private FragmentLoginBinding binding;
-    private FirebaseAuth mAuth;
+    private Client client;
 
     @Nullable
     @Override
@@ -59,11 +53,9 @@ public class LoginFragment extends Fragment {
         final EditText usernameEditText = binding.username;
         final EditText passwordEditText = binding.password;
         final Button loginButton = binding.login;
-        final ProgressBar loadingProgressBar = binding.loading;
         final Button registerButton = binding.register;
         Intent intent = new Intent("HIDE_MENU_ACTION");
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
-        mAuth = FirebaseAuth.getInstance();
 
         loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), new Observer<LoginFormState>() {
             @Override
@@ -81,18 +73,16 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        loginViewModel.getLoginResult().observe(getViewLifecycleOwner(), new Observer<LoginResult>() {
+        loginViewModel.getLoginResult().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
-            public void onChanged(@Nullable LoginResult loginResult) {
+            public void onChanged(Boolean loginResult) {
                 if (loginResult == null) {
                     return;
                 }
-                loadingProgressBar.setVisibility(View.GONE);
-                if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
-                }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
+                if (loginResult) {
+                    loginSuccess();
+                } else {
+                    showLoginFailed();
                 }
             }
         });
@@ -121,8 +111,9 @@ public class LoginFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
+                    String email = usernameEditText.getText().toString();
+                    String password = passwordEditText.getText().toString();
+                    login(email, password);
                 }
                 return false;
             }
@@ -144,23 +135,22 @@ public class LoginFragment extends Fragment {
                 login(email, password);
             }
         });
-    }
 
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
-        if (getContext() != null && getContext().getApplicationContext() != null) {
-            Toast.makeText(getContext().getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        client = Client.getInstance();
+        client.readKeys(getContext());
+        if (client.isLoggedIn()) {
+            NavController controller = Navigation.findNavController(getView());
+            controller.navigate(R.id.action_loginFragment_to_homeFragment);
         }
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
-        if (getContext() != null && getContext().getApplicationContext() != null) {
-            Toast.makeText(
-                    getContext().getApplicationContext(),
-                    errorString,
-                    Toast.LENGTH_LONG).show();
-        }
+    private void loginSuccess() {
+        NavController controller = Navigation.findNavController(getView());
+        controller.navigate(R.id.action_loginFragment_to_homeFragment);
+    }
+
+    private void showLoginFailed() {
+        Toast.makeText(getContext().getApplicationContext(), "Authentication failed: Unknown error", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -169,37 +159,10 @@ public class LoginFragment extends Fragment {
         binding = null;
     }
 
-    private void login(String email, String password){
-
-//        AESEncryption aes = new AESEncryption();
-//        AuthenticationServer as = new AuthenticationServer(aes);
-//        KeyDistributionCenter kdc = new KeyDistributionCenter(as, aes);
-//        Client client = new Client(kdc, aes, email, password);
-//
-//        if (client.requestService("FileService")) {
-//            // Sign in success, update UI with the signed-in user's information
-//            Toast.makeText(getContext().getApplicationContext(), "Valid clients, internal authorized users, environmental testing passed", Toast.LENGTH_LONG).show();
-//
-//        } else {
-//            // If sign in fails, display a message to the user.
-//            Toast.makeText(getContext().getApplicationContext(), "Potential Risk Warning, unauthorized third-party clients or users, there may be potential environmental hazards, take care to avoid privacy exchanges", Toast.LENGTH_SHORT).show();
-//        }
-
-
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(getContext().getApplicationContext(), "welcome", Toast.LENGTH_LONG).show();
-                            NavController controller = Navigation.findNavController(getView());
-                            controller.navigate(R.id.action_loginFragment_to_homeFragment);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(getContext().getApplicationContext(), "Authentication failed: Unknown error", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+    private void login(String email, String password) {
+        client.authenticateWithChatService(getContext(), email, password, success -> {
+            this.loginViewModel.setLoginResult(success);
+            return null;
+        });
     }
 }

@@ -1,10 +1,9 @@
 package com.example.conversapro.KerberosProtocol.KDC;
 
 import com.example.conversapro.KerberosProtocol.Encryption.AESEncryption;
+import com.example.conversapro.KerberosProtocol.KDC.database.Database;
 
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.function.Function;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -27,7 +26,7 @@ public class AuthenticationServer {
             }
 
             try {
-                SecretKeySpec sessionKey = AESEncryption.generateKey(128);
+                SecretKeySpec sessionKey = AESEncryption.generateKey(256);
                 callback.apply(ASMessage.encode(password, sessionKey, this.tgsKey, userId));
             } catch (Exception e) {
                 callback.apply(null);

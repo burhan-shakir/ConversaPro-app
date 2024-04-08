@@ -2,7 +2,7 @@ package com.example.conversapro.ui.chatScreen;
 
 import java.util.ArrayList;
 import java.util.List;
-
+// Models all fields required when creating a chat with their getters and setters (entity class)
 public class ChatModel {
     private String senderID;
     private String recvName;

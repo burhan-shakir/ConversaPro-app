@@ -1,4 +1,4 @@
-package com.example.conversapro.ui.adapter;
+package com.example.conversapro.ui.chatScreen;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -10,10 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.conversapro.R;
-import com.example.conversapro.ui.chatScreen.ChatModel;
 
 import java.util.List;
-
+// Controls how chats are formatted on the homepage in the list (Controller class)
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatViewHolder> {
     private List<ChatModel> chatList;
     private int selectedPosition = RecyclerView.NO_POSITION;
@@ -35,6 +34,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         ChatModel chatItem = chatList.get(position);
+        // Set the chat name and receiver on the screen
         holder.textViewChatName.setText(chatItem.getChatName());
         holder.contactName.setText(chatItem.getRecvName());
         // Set background color based on selected state
@@ -69,5 +69,4 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
             contactName = itemView.findViewById(R.id.message_preview);
         }
     }
-    // Interface for click events was moved to separate interface file
 }

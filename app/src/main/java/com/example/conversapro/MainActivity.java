@@ -18,8 +18,12 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-
+//-------------------------------------------------------------------------------------
+//                               SFWRENG 3A04 Deliverable 4
+//                                 ConversaPro Application
+//                                     T03 - Group 10
+//    Kelvin Yu, Ghena Hatoum, Burhan Shakir, Jianqing (Pega) Liu, Xiaotian (Raynor) Lou
+//-------------------------------------------------------------------------------------
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

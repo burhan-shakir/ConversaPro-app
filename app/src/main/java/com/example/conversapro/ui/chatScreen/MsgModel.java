@@ -1,7 +1,7 @@
 package com.example.conversapro.ui.chatScreen;
 
 import java.util.Date;
-
+// Models all fields required in a message with their getters and setters (entity class)
 public class MsgModel {
     private String message;
     private String senderID;

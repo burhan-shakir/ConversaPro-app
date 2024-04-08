@@ -28,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
+// Chat screen view - performs all necessary initializations for a chat screen and handles user interaction (Boundary class)
 public class ChatScreenFragment extends Fragment{
     private ListView listViewChat;
     private EditText editTextMessage;
@@ -53,7 +53,7 @@ public class ChatScreenFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the layout for this fragment and hide menu action bar while in a chat
         Intent intent = new Intent("HIDE_MENU_ACTION");
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
         binding = FragmentChatScreenBinding.inflate(inflater, container, false);
@@ -66,6 +66,7 @@ public class ChatScreenFragment extends Fragment{
 
         return binding.getRoot();
     }
+    // Locate all important screen components
     private void initializeViews(View view) {
         listViewChat = view.findViewById(R.id.listViewChat);
         editTextMessage = view.findViewById(R.id.editTextMessage);
@@ -73,10 +74,12 @@ public class ChatScreenFragment extends Fragment{
         chatName = view.findViewById(R.id.chatName);
 
     }
+    // Initialize DB
     private void initializeFirebase() {
         databaseReferenceChats = FirebaseDatabase.getInstance().getReference().child("chats");
     }
 
+    // Handle user sending a message
     private void sendMessage() {
         buttonSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,8 +87,9 @@ public class ChatScreenFragment extends Fragment{
 
                 String message = editTextMessage.getText().toString().trim();
                 if (!TextUtils.isEmpty(message)) {
-                     // Set the sender's name or ID
                     String receiver = getRecvName();
+                    // Send user message to DB and display it in proper format on screen using adapter
+                    // UPDATING CHAT LOG
                     MsgModel chatMessage = new MsgModel(message, currentUserName, receiver);
                     databaseReferenceChats.child(currentRoomID).child("messages").push().setValue(chatMessage);
                     editTextMessage.setText("");
@@ -96,6 +100,8 @@ public class ChatScreenFragment extends Fragment{
         });
 
     }
+    // Display all existing messages of this chat on screen
+    // CHAT LOG BEING ACCESSED AND DISPLAYED
     private void initMessageListener(){
         databaseReferenceChats.child(currentRoomID).child("messages").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -132,6 +138,7 @@ public class ChatScreenFragment extends Fragment{
     private String getRecvName() {
         return currentRcvName;
     }
+    // Retrieve all important chat details without DB access
     private void initChatDetails(){
 
         if (getArguments() != null) {

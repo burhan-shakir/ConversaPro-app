@@ -30,7 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+// Starting a new chat view - handles user interaction with "Create New Chat" feature and the form that requires submission (Boundary class)
 public class NewChatDetailsFragment extends Fragment {
     private  EditText chatNameEditText;
     private EditText chatDescriptionEditText;
@@ -53,6 +53,7 @@ public class NewChatDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentNewChatDetailsBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
+        // Locate all form fields
         chatNameEditText = v.findViewById(R.id.chatNameNewChatForm);
         chatDescriptionEditText = v.findViewById(R.id.descriptionNewChatForm);
         recvNameEditText = v.findViewById(R.id.chatInviteeNewChatForm);
@@ -64,6 +65,7 @@ public class NewChatDetailsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Handle clicking of form submission button
         binding.newChatFormSubmitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,11 +79,12 @@ public class NewChatDetailsFragment extends Fragment {
         });
     }
     private void verifyFormDetails(String chatName, String chatDescription, String recvName, int roomID){
-        // TO DO: Check database if roomID exists
+        // Ensure necessary fields are occupied
         if (TextUtils.isEmpty(chatName) || TextUtils.isEmpty(recvName)){
             Toast.makeText(getContext().getApplicationContext(), "Please fill in all details!", Toast.LENGTH_LONG).show();
         }
         else {
+            // Push new chat to DB adding to CHAT LOG
             ChatModel chatModel = new ChatModel(chatName, chatDescription, recvName, userName, roomID);
             DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("chats").child(String.valueOf(roomID));
             database.push().setValue(chatModel);
@@ -107,6 +110,7 @@ public class NewChatDetailsFragment extends Fragment {
         int rand = random.nextInt(100);
         return rand;
     }
+    // Navigate user to chat screen following new chat creation; send important chat fields so DB access not required
     private void navigateToChatScreen(int roomID, String chatName, String recvName){
         Fragment chatScreen = new ChatScreenFragment();
         Bundle bundle = new Bundle();

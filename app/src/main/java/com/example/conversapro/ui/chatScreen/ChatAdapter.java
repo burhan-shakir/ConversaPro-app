@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
+// Arranges all the messages in the desired layout and populates them (Controller class)
 public class ChatAdapter extends ArrayAdapter<MsgModel> {
     public ChatAdapter(Context context, List<MsgModel> messages){
 
@@ -27,7 +27,7 @@ public class ChatAdapter extends ArrayAdapter<MsgModel> {
         if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.message, parent, false);
         }
-
+        // Set all message fields on screen
         MsgModel currentMessage = getItem(position);
 
         TextView textViewSender = listItemView.findViewById(R.id.textViewSender);

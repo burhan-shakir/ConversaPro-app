@@ -36,14 +36,17 @@ public class NotificationsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        //get the users database
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
         Client client=Client.getInstance();
         String uid = client.getUid();
+        //get information from xml file (bind them)
         accountText = binding.txtAccount;
         emailText = binding.txtEmail;
         descriptionText = binding.txtDescription;
         editButton = binding.btnEdit;
         logoutButton = binding.btnLogout;
+        //get information for the user that is logged in
         mDatabase.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -54,7 +57,7 @@ public class NotificationsFragment extends Fragment {
 
             }
         });
-
+        //go to edit profile
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,7 +65,7 @@ public class NotificationsFragment extends Fragment {
                 controller.navigate(R.id.action_navigation_notifications_to_editProfile);
             }
         });
-
+        //logout user and go back to the main activity page.
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +81,7 @@ public class NotificationsFragment extends Fragment {
         View root = binding.getRoot();
         return root;
     }
+    //retrieve information from the database for a user
     public void fillInformation(DataSnapshot snapshot){
         account = snapshot.child("name").getValue(String.class);
         email = snapshot.child("email").getValue(String.class);

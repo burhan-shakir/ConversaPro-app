@@ -40,8 +40,10 @@ public class EditProfile extends Fragment {
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //get the new values
                 String account = binding.editAccount.getText().toString();
                 String description = binding.editDescription.getText().toString();
+                //update database
                 updateInformation(account, description);
             }
         });
@@ -58,6 +60,7 @@ public class EditProfile extends Fragment {
         // Update the description field in the database
         mDatabase.child(currentUserId).child("description").setValue(newDescription);
         NavController controller = Navigation.findNavController(getView());
+        //move back to notification
         controller.navigate(R.id.action_editProfile_to_navigation_notifications);
     }
 }

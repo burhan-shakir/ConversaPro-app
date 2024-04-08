@@ -119,6 +119,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        //goes to registration page for when the button is pressed
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,28 +128,31 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        //authenticates user when they press login
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //take user information
                 String email = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
+                //go to login function to check
                 login(email, password);
             }
         });
 
+        //if user can login it goes to loginSuccess()
         client = Client.getInstance();
         client.readKeys(getContext());
         if (client.isLoggedIn()) {
-            NavController controller = Navigation.findNavController(getView());
-            controller.navigate(R.id.action_loginFragment_to_homeFragment);
+            loginSuccess();
         }
     }
-
+    //goes to the home screen
     private void loginSuccess() {
         NavController controller = Navigation.findNavController(getView());
         controller.navigate(R.id.action_loginFragment_to_homeFragment);
     }
-
+    //shows a message saying that you can't sign in
     private void showLoginFailed() {
         Toast.makeText(getContext().getApplicationContext(), "Authentication failed: Unknown error", Toast.LENGTH_SHORT).show();
     }

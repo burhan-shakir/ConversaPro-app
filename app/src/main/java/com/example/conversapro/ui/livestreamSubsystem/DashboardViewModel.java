@@ -8,6 +8,7 @@ public class DashboardViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
+    // Display text view
     public DashboardViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("Chat Log");

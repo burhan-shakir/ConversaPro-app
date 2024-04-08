@@ -13,13 +13,13 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.conversapro.R;
 import com.example.conversapro.databinding.FragmentDashboardBinding;
-
 public class DashboardFragment extends Fragment {
-
+    // Binding object for the fragment's layout
     private FragmentDashboardBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        // Creating a ViewModel instance associated with this fragment
         DashboardViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);
 
@@ -27,8 +27,10 @@ public class DashboardFragment extends Fragment {
         View root = binding.getRoot();
 
         final TextView textView = binding.textDashboard;
+        // Observing changes in the text LiveData and updating the TextView accordingly
         dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
+        // Setting click listener for a button in the layout
         binding.clickButton.setOnClickListener(v -> {
             // Use the Navigation Component to navigate to the StreamSetupFragment
             NavHostFragment.findNavController(this)

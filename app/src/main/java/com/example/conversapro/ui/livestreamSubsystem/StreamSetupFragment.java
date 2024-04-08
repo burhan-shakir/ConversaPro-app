@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.conversapro.R;
 
+// Fragment responsible for setting up a live stream
 public class StreamSetupFragment extends Fragment {
 
     @Override
@@ -24,11 +25,11 @@ public class StreamSetupFragment extends Fragment {
 
         EditText streamTitleEditText = view.findViewById(R.id.streamTitleEditText);
 
-
+        // Finding the invite button in the layout
         Button inviteButton = view.findViewById(R.id.inviteButton);
+        // Setting a click listener for the invite button
         inviteButton.setOnClickListener(v -> {
-
-
+            // Navigating back to the previous fragment when the invite button is clicked
             NavHostFragment.findNavController(this).navigateUp();
         });
 

@@ -92,22 +92,14 @@ public class StartFragment extends Fragment {
 
         Handler mainHandler = new Handler(Looper.getMainLooper());
 
-
-
-
-
         mainHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 NavController controller = Navigation.findNavController(getView());
-//
-                //skip login for test merge
                 controller.navigate(R.id.action_startFragment_to_loginFragment);
 
-//this doesn't make much sense to add since users can go to see chat without logging in.
-//
-//                Intent intent = new Intent("SHOW_MENU_ACTION");
-//                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+                //Intent intent = new Intent("SHOW_MENU_ACTION");
+                //LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
 
 
             }

@@ -60,7 +60,18 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.example.conversapro.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_startStream"
+            app:destination="@id/streamSetupFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/streamSetupFragment"
+        android:name="com.example.conversapro.ui.dashboard.StreamSetupFragment"
+        android:label="Stream Setup"
+        tools:layout="@layout/fragment_stream_setup" />
+
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -71,6 +82,7 @@
             android:id="@+id/action_navigation_notifications_to_editProfile"
             app:destination="@id/editProfile" />
     </fragment>
+
     <fragment
         android:id="@+id/newChatDetails"
         android:name="com.example.conversapro.ui.chatScreen.NewChatDetailsFragment"
